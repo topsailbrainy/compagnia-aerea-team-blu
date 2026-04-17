@@ -29,10 +29,10 @@ const NewsSection: React.FC = () => {
               className="card-img"
             />
             <div className="card-content">
-              <span className="badge badge-error">Breaking News</span>
+              <span className="badge badge-error">Notizie dell'Ultima Ora</span>
               <h3 className="card-title">BOSS DELLA MAFIA UCCIDE PRIGIONIERO</h3>
               <p className="card-description">Arrestato da poche ore Mune ''boss della mafia'' pilota e ceo della ghoan airline</p>
-              <button className="card-link">Read Report</button>
+              <button className="card-link">Leggi l'Articolo</button>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ const NewsSection: React.FC = () => {
               className="card-img"
             />
             <div className="card-content">
-              <span className="badge badge-primary">Limited Offer</span>
+              <span className="badge badge-primary">Offerta Limitata</span>
               <h3 className="card-title">SCONTI ESCLUSIVI SOLO SUL SITO</h3>
               <p className="card-description">Prenota il tuo prossimo volo direttamente da noi per accedere alle tariffe più vantaggiose e premi fedeltà unici.</p>
               <button className="card-link">Scopri le Offerte</button>

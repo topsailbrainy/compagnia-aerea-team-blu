@@ -1,0 +1,166 @@
+.booking-page {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  background-color: var(--surface);
+  min-height: 100vh;
+}
+
+.booking-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .booking-header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.booking-title {
+  font-family: var(--font-headline);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--on-background);
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.search-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  color: var(--on-surface-variant);
+}
+
+.summary-badge {
+  background-color: var(--surface-container);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.summary-icon {
+  font-size: 1.125rem;
+}
+
+.summary-city {
+  font-weight: 700;
+}
+
+.summary-divider {
+  opacity: 0.3;
+}
+
+.summary-total-card {
+  background-color: var(--surface-container-lowest);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0px 20px 40px rgba(45, 47, 47, 0.06);
+  min-width: 18rem;
+}
+
+.total-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.total-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--outline);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.wallet-icon {
+  color: var(--primary);
+}
+
+.total-amount {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.total-note {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin: 0.25rem 0 0 0;
+}
+
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .booking-layout {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.flight-listings {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-icon-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.section-icon-circle.outbound {
+  background-color: var(--primary);
+}
+
+.section-icon-circle.inbound {
+  background-color: var(--secondary);
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.section-date {
+  color: var(--primary-dim);
+  opacity: 0.5;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

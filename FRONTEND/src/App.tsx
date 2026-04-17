@@ -1,24 +1,23 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import NewsSection from './components/NewsSection'
-import QuoteSection from './components/QuoteSection'
-import Newsletter from './components/Newsletter'
-import Footer from './components/Footer'
-import './App.css'
+import { Routes, Route } from 'react-router';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Booking from './pages/Booking';
+import './App.css';
 
 function App() {
   return (
     <>
       <Navbar />
       <main style={{ flexGrow: 1 }}>
-        <Hero />
-        <NewsSection />
-        <QuoteSection />
-        <Newsletter />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/booking" element={<Booking />} />
+        </Routes>
       </main>
       <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -111,12 +111,36 @@
   grid-template-columns: 1fr;
   border: 1px solid rgba(172, 173, 173, 0.2);
   border-radius: 0.75rem;
-  overflow: hidden;
+  /* overflow: hidden;  <-- REMOVED to allow dropdown visibility */
 }
 
 @media (min-width: 768px) {
   .search-fields {
     grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Applying border radius manually to corners since we removed overflow:hidden */
+  .search-field:first-child {
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
+  }
+  
+  .search-field:last-child {
+    border-top-right-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-field:first-child {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+  
+  .search-field:last-child {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    border-bottom: none;
   }
 }
 
@@ -127,6 +151,69 @@
   flex-direction: column;
   border-right: 1px solid rgba(172, 173, 173, 0.1);
   transition: background-color 0.2s;
+  position: relative; /* For dropdown positioning */
+}
+
+/* Dropdown styles */
+.city-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid rgba(172, 173, 173, 0.2);
+  border-radius: 0 0 0.75rem 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.city-dropdown li {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-headline);
+  font-weight: 600;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.city-dropdown li:hover {
+  background-color: #f0f1f1;
+  color: var(--primary);
+}
+
+.city-dropdown li.no-results {
+  color: var(--outline);
+  font-style: italic;
+  cursor: default;
+}
+
+.city-dropdown li.no-results:hover {
+  background-color: transparent;
+}
+
+/* DatePicker custom styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 100%;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--on-surface);
+  outline: none;
+}
+
+.react-datepicker__input-container input::placeholder {
+  color: var(--outline-variant);
 }
 
 .search-field:hover {

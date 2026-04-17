@@ -74,6 +74,35 @@
   gap: 1rem;
 }
 
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--outline);
+  margin-right: 0.5rem;
+}
+
+.lang-option {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lang-option:hover {
+  color: var(--primary);
+}
+
+.lang-option.active {
+  color: var(--primary);
+}
+
+.lang-separator {
+  color: var(--outline-variant);
+  font-weight: 400;
+}
+
 .cart-timer {
   display: flex;
   align-items: center;

@@ -11,16 +11,16 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="footer-column">
-          <h5 className="footer-title">Explore</h5>
+          <h5 className="footer-title">Esplora</h5>
           <ul className="footer-links">
-            <li><a href="#">Support</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Supporto</a></li>
+            <li><a href="#">Informativa sulla Privacy</a></li>
             <li><a href="#">Sostenibilità</a></li>
           </ul>
         </div>
 
         <div className="footer-column">
-          <h5 className="footer-title">Legal</h5>
+          <h5 className="footer-title">Legale</h5>
           <ul className="footer-links">
             <li><a href="#">Termini di Servizio</a></li>
             <li><a href="#">Cookies</a></li>
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="footer-column">
-          <h5 className="footer-title">Contact</h5>
+          <h5 className="footer-title">Contatti</h5>
           <ul className="footer-links">
             <li><a href="#">Contatti</a></li>
             <li className="social-links">

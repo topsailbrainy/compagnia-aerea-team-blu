@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/Navbar.css';
 
 const Navbar: React.FC = () => {
+  const [lang, setLang] = useState<'IT' | 'EN'>('IT');
+
   return (
     <nav className="navbar-container">
       <div className="navbar-content">
         <div className="navbar-logo">
-          Ghoan Airlines
+          Gohan Airlines
         </div>
         
         <div className="navbar-links">
@@ -16,6 +18,22 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="navbar-actions">
+          <div className="lang-toggle">
+            <span 
+              className={`lang-option ${lang === 'IT' ? 'active' : ''}`}
+              onClick={() => setLang('IT')}
+            >
+              IT
+            </span>
+            <span className="lang-separator">|</span>
+            <span 
+              className={`lang-option ${lang === 'EN' ? 'active' : ''}`}
+              onClick={() => setLang('EN')}
+            >
+              EN
+            </span>
+          </div>
+
           <div className="cart-timer">
             <div className="cart-icon-wrapper">
               <span className="material-symbols-outlined text-primary">shopping_cart</span>
@@ -28,10 +46,10 @@ const Navbar: React.FC = () => {
           
           <button className="btn-signin">
             <span className="material-symbols-outlined">person</span>
-            <span>Sign In</span>
+            <span>Accedi</span>
           </button>
           
-          <button className="btn-signup">Sign Up</button>
+          <button className="btn-signup">Registrati</button>
         </div>
       </div>
     </nav>

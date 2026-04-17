@@ -110,3 +110,81 @@ INSERT INTO documento (tipo, numero, scadenza) VALUES
 
 INSERT INTO utenti (name, surname, email, password, documento_id) VALUES 
 ('Luca', 'Zani', 'luca@example.com', 'password123', 1);
+
+-- Additional Mockup Data
+INSERT INTO piloti (name, surname) VALUES 
+('Giovanni', 'Bianchi'),
+('Anna', 'Neri'),
+('Paolo', 'Bruni');
+
+INSERT INTO aerei (modello, capienza, pilot_id) VALUES 
+('Boeing 787', 250, 3),
+('Airbus A350', 300, 4),
+('Boeing 747', 400, 5);
+
+INSERT INTO aereoporti (codice_IATA, name, city, country) VALUES 
+('LHR', 'Heathrow', 'London', 'UK'),
+('CDG', 'Charles de Gaulle', 'Paris', 'France'),
+('FRA', 'Frankfurt Airport', 'Frankfurt', 'Germany'),
+('MAD', 'Adolfo Suárez Madrid-Barajas', 'Madrid', 'Spain'),
+('AMS', 'Schiphol', 'Amsterdam', 'Netherlands'),
+('DXB', 'Dubai International', 'Dubai', 'UAE'),
+('NRT', 'Narita', 'Tokyo', 'Japan'),
+('SYD', 'Kingsford Smith', 'Sydney', 'Australia'),
+('BCN', 'El Prat', 'Barcelona', 'Spain');
+
+INSERT INTO gates (id, aereoporto_codice_IATA) VALUES 
+(1, 'LHR'),
+(2, 'LHR'),
+(1, 'CDG'),
+(2, 'CDG'),
+(1, 'FRA'),
+(1, 'MAD'),
+(1, 'AMS'),
+(2, 'AMS'),
+(1, 'DXB'),
+(1, 'NRT'),
+(1, 'SYD'),
+(1, 'BCN');
+
+INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES 
+('FCO', 'LHR'),
+('LHR', 'JFK'),
+('CDG', 'FRA'),
+('FRA', 'FCO'),
+('MAD', 'FCO'),
+('MXP', 'CDG'),
+('FCO', 'AMS'),
+('AMS', 'DXB'),
+('DXB', 'NRT'),
+('NRT', 'SYD'),
+('JFK', 'LHR'),
+('CDG', 'BCN'),
+('BCN', 'MAD');
+
+INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, orario_partenza, orario_arrivo) VALUES 
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'FCO' AND aereoporto_arrivo = 'LHR' LIMIT 1), 2, 2, 'FCO', '2026-06-15 08:00:00', '2026-06-15 10:30:00'),
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'MXP' AND aereoporto_arrivo = 'JFK' LIMIT 1), 3, 1, 'MXP', '2026-07-10 14:00:00', '2026-07-10 22:00:00'),
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'CDG' AND aereoporto_arrivo = 'FRA' LIMIT 1), 4, 1, 'CDG', '2026-08-05 09:00:00', '2026-08-05 10:45:00');
+
+INSERT INTO card (tipo, numero, scadenza, cvv, nome, cognome) VALUES 
+('Visa', '1234567890', '2028-12-31', '123', 'Luca', 'Zani'),
+('Mastercard', '0987654321', '2027-06-30', '456', 'Paola', 'Bruni');
+
+INSERT INTO documento (tipo, numero, scadenza) VALUES 
+('Carta Identità', 'CA98765ZZ', '2031-05-20');
+
+INSERT INTO utenti (name, surname, email, password, documento_id, card_id) VALUES 
+('Paola', 'Bruni', 'paola@example.com', 'securepass', 2, 2);
+
+-- Update existing user to link card
+UPDATE utenti SET card_id = 1 WHERE email = 'luca@example.com';
+
+INSERT INTO prenotazione (user_id) VALUES 
+((SELECT id FROM utenti WHERE email = 'luca@example.com')),
+((SELECT id FROM utenti WHERE email = 'paola@example.com'));
+
+INSERT INTO biglietto (prenotazione_id, volo_id) VALUES 
+((SELECT id FROM prenotazione WHERE user_id = (SELECT id FROM utenti WHERE email = 'luca@example.com') LIMIT 1), 1),
+((SELECT id FROM prenotazione WHERE user_id = (SELECT id FROM utenti WHERE email = 'paola@example.com') LIMIT 1), 2);
+

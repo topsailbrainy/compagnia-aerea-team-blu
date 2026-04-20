@@ -27,7 +27,7 @@ CREATE TABLE gates (
 CREATE TABLE tratte (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     aereoporto_partenza VARCHAR(3) REFERENCES aereoporti(codice_IATA),
-    aereoporto_arrivo VARCHAR(3) REFERENCES aereoporti(codice_IATA)
+    aereoporto_arrivo VARCHAR(3) REFERENCES aereoporti(codice_IATA),
     prezzo NUMERIC
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE utenti(
     email VARCHAR(50),
     password VARCHAR(50),
     documento_id INTEGER REFERENCES documento(id),
-    card_id INTEGER REFERENCES card(id)
+    card_id INTEGER REFERENCES card(id),
     admin BOOLEAN
 );
 
@@ -100,7 +100,8 @@ INSERT INTO aereoporti (codice_IATA, name, city, country) VALUES
 INSERT INTO gates (id, aereoporto_codice_IATA) VALUES 
 (1, 'FCO'),
 (2, 'FCO'),
-(1, 'MXP');
+(1, 'MXP'),
+(2, 'MXP');
 
 INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo, prezzo) VALUES 
 ('FCO', 'MXP', 100),
@@ -116,8 +117,6 @@ INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data_pa
 INSERT INTO documento (tipo, numero, scadenza) VALUES 
 ('Passaporto', 'AB1234567', '2030-01-01');
 
-INSERT INTO utenti (name, surname, email, password, documento_id) VALUES 
-('Luca', 'Zani', 'luca@example.com', 'password123', 1);
 
 -- Additional Mockup Data
 INSERT INTO piloti (name, surname) VALUES 
@@ -155,22 +154,22 @@ INSERT INTO gates (id, aereoporto_codice_IATA) VALUES
 (1, 'SYD'),
 (1, 'BCN');
 
-INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES 
-('FCO', 'LHR', '100'),
-('LHR', 'JFK',  '200'),
-('CDG', 'FRA', '300'),
-('FRA', 'FCO', '400'),
-('MAD', 'FCO', '100'),
-('MXP', 'CDG' , '100'),
-('FCO', 'AMS'   , '100'),
-('AMS', 'DXB'  '250' ),
-('DXB', 'NRT'   , '200'),
-('NRT', 'SYD'   '100'),
-('JFK', 'LHR'   '200'),
-('CDG', 'BCN'   '300'),
-('BCN', 'MAD'   '100');
+INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo, prezzo) VALUES 
+('FCO', 'LHR', 100),
+('LHR', 'JFK', 200),
+('CDG', 'FRA', 300),
+('FRA', 'FCO', 400),
+('MAD', 'FCO', 100),
+('MXP', 'CDG', 100),
+('FCO', 'AMS', 100),
+('AMS', 'DXB', 250),
+('DXB', 'NRT', 200),
+('NRT', 'SYD', 100),
+('JFK', 'LHR', 200),
+('CDG', 'BCN', 300),
+('BCN', 'MAD', 100);
 
-INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data partenza, data arrivo, orario_partenza, orario_arrivo) VALUES 
+INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data_partenza, data_arrivo, orario_partenza, orario_arrivo) VALUES 
 ((SELECT id FROM tratte WHERE aereoporto_partenza = 'FCO' AND aereoporto_arrivo = 'LHR' LIMIT 1), 2, 2, 'FCO', '2026-06-15', '2026-06-15','08:00:00','10:30:00'),
 ((SELECT id FROM tratte WHERE aereoporto_partenza = 'MXP' AND aereoporto_arrivo = 'JFK' LIMIT 1), 3, 1, 'MXP', '2026-07-10', '2026-07-10', '14:00:00', '22:00:00'),
 ((SELECT id FROM tratte WHERE aereoporto_partenza = 'CDG' AND aereoporto_arrivo = 'FRA' LIMIT 1), 4, 1, 'CDG', '2026-08-05', '2026-08-05', '09:00:00', '10:45:00');
@@ -189,12 +188,4 @@ INSERT INTO utenti (name, surname, email, password, documento_id, card_id, admin
 
 -- Update existing user to link card
 UPDATE utenti SET card_id = 1 WHERE email = 'luca@example.com';
-
-INSERT INTO prenotazione (user_id) VALUES 
-((SELECT id FROM utenti WHERE email = 'luca@example.com')),
-((SELECT id FROM utenti WHERE email = 'paola@example.com'));
-
-INSERT INTO biglietto (prenotazione_id, volo_id) VALUES 
-((SELECT id FROM prenotazione WHERE user_id = (SELECT id FROM utenti WHERE email = 'luca@example.com') LIMIT 1), 1),
-((SELECT id FROM prenotazione WHERE user_id = (SELECT id FROM utenti WHERE email = 'paola@example.com') LIMIT 1), 2);
 

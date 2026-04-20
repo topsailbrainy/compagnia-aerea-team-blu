@@ -1,6 +1,6 @@
 //GHOAN AIRLINES HOME
 import { Router } from "express";
-import { partenzaGET , arrivoGET } from "@/controller/aereoporti.controller";
+import { partenzaGET , arrivoGET } from "../controller/aereoporti.controller";
 
 
 export const router = Router();

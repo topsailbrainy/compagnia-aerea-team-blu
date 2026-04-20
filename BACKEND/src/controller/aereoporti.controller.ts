@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express";
 import { pool } from "../db";
-import { Aereoporto } from "@/types/aereoporto.type";
+import { Aereoporto } from "../types/aereoporto.type";
 
 
 // get aereoporti Partenza e Arrivo

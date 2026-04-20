@@ -25,8 +25,7 @@ export const authMW = async (req: CustomRequest, res: Response, next: NextFuncti
 
     try {
         // 3. Ricerca dell'utente nel DB (Tabella utenti )
-        const query = 'SELECT id, password FROM utenti WHERE email = $1';
-        const result = await pool.query(query, [email]);
+        const result = await pool.query('SELECT id, password FROM utenti WHERE email = $1', [email]);
 
         if (result.rows.length === 0) {
             return res.status(401).json({ error: 'Credenziali non valide' });

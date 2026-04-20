@@ -8,8 +8,13 @@ interface Flight {
 
 interface TariffaState {
   isRoundTrip: boolean;
+  fromCity: string;
+  toCity: string;
+  departureDate: Date | null;
+  returnDate: Date | null;
   outboundFlight: Flight | null;
   inboundFlight: Flight | null;
+  setSearchCriteria: (data: { fromCity: string, toCity: string, departureDate: Date | null, returnDate: Date | null, isRoundTrip: boolean }) => void;
   setIsRoundTrip: (isRoundTrip: boolean) => void;
   toggleFlight: (flight: Flight) => void;
   getTotalPrice: () => number;
@@ -18,9 +23,14 @@ interface TariffaState {
 
 export const useStoreTariffa = create<TariffaState>((set, get) => ({
   isRoundTrip: true,
+  fromCity: '',
+  toCity: '',
+  departureDate: new Date(),
+  returnDate: new Date(),
   outboundFlight: null,
   inboundFlight: null,
 
+  setSearchCriteria: (data) => set({ ...data }),
   setIsRoundTrip: (isRoundTrip: boolean) => set({ isRoundTrip }),
 
   toggleFlight: (flight: Flight) => {

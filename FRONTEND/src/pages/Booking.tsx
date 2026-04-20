@@ -5,7 +5,16 @@ import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/Booking.css';
 
 const Booking: React.FC = () => {
-  const { isRoundTrip, outboundFlight, inboundFlight, toggleFlight } = useStoreTariffa();
+  const { isRoundTrip, outboundFlight, inboundFlight, toggleFlight, fromCity, toCity, departureDate, returnDate } = useStoreTariffa();
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return '';
+    return date.toLocaleDateString('it-IT', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
 
   return (
     <div className="booking-page">
@@ -17,9 +26,9 @@ const Booking: React.FC = () => {
             <div className="search-summary">
               <span className="summary-badge">{isRoundTrip ? 'Andata e Ritorno' : 'Sola Andata'}</span>
               <span className="material-symbols-outlined summary-icon">flight_takeoff</span>
-              <span className="summary-city">Tokyo (HND)</span>
+              <span className="summary-city">{fromCity}</span>
               <span className="material-symbols-outlined summary-icon">arrow_forward</span>
-              <span className="summary-city">New York (JFK)</span>
+              <span className="summary-city">{toCity}</span>
               <span className="summary-divider">|</span>
               <span className="summary-passengers">2 Viaggiatori</span>
             </div>
@@ -36,7 +45,7 @@ const Booking: React.FC = () => {
                   <span className="material-symbols-outlined">flight_takeoff</span>
                 </div>
                 <h2 className="section-title">
-                  Volo di Andata <span className="section-date">Mar, 14 Dic</span>
+                  Volo di Andata <span className="section-date">{formatDate(departureDate)}</span>
                 </h2>
               </div>
               
@@ -44,9 +53,9 @@ const Booking: React.FC = () => {
                 <FlightCard 
                   id="out-1"
                   departureTime="09:15"
-                  departureCity="Tokyo, HND"
+                  departureCity={fromCity}
                   arrivalTime="08:35"
-                  arrivalCity="New York, JFK"
+                  arrivalCity={toCity}
                   duration="13h 20m"
                   price={729}
                   stops="Diretto"
@@ -58,9 +67,9 @@ const Booking: React.FC = () => {
                 <FlightCard 
                   id="out-2"
                   departureTime="14:40"
-                  departureCity="Tokyo, HND"
+                  departureCity={fromCity}
                   arrivalTime="16:25"
-                  arrivalCity="New York, JFK"
+                  arrivalCity={toCity}
                   duration="16h 45m"
                   price={580}
                   stops="1 Scalo (ICN)"
@@ -80,7 +89,7 @@ const Booking: React.FC = () => {
                     <span className="material-symbols-outlined">flight_land</span>
                   </div>
                   <h2 className="section-title">
-                    Volo di Ritorno <span className="section-date">Ven, 24 Dic</span>
+                    Volo di Ritorno <span className="section-date">{formatDate(returnDate)}</span>
                   </h2>
                 </div>
                 
@@ -88,9 +97,9 @@ const Booking: React.FC = () => {
                   <FlightCard 
                     id="in-1"
                     departureTime="11:20"
-                    departureCity="New York, JFK"
+                    departureCity={toCity}
                     arrivalTime="15:25"
-                    arrivalCity="Tokyo, HND"
+                    arrivalCity={fromCity}
                     duration="14h 05m"
                     price={729}
                     stops="Diretto"

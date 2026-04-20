@@ -9,7 +9,7 @@ const cities = ["Roma", "Milano", "Parigi", "Londra", "New York"];
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
-  const setIsRoundTripStore = useStoreTariffa(state => state.setIsRoundTrip);
+  const setSearchData = useStoreTariffa(state => state.setSearchCriteria);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
     const isDateValid = isRoundTrip ? (departureDate && returnDate) : departureDate;
 
     if (fromCity && toCity && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
-      setIsRoundTripStore(isRoundTrip);
+      setSearchData({ fromCity, toCity, departureDate, returnDate, isRoundTrip})
       navigate('/booking');
     }
   };

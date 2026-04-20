@@ -28,6 +28,7 @@ CREATE TABLE tratte (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     aereoporto_partenza VARCHAR(3) REFERENCES aereoporti(codice_IATA),
     aereoporto_arrivo VARCHAR(3) REFERENCES aereoporti(codice_IATA)
+    prezzo NUMERIC
 );
 
 CREATE TABLE voli (
@@ -68,6 +69,7 @@ CREATE TABLE utenti(
     password VARCHAR(50),
     documento_id INTEGER REFERENCES documento(id),
     card_id INTEGER REFERENCES card(id)
+    admin BOOLEAN
 );
 
 CREATE TABLE prenotazione(
@@ -100,9 +102,9 @@ INSERT INTO gates (id, aereoporto_codice_IATA) VALUES
 (2, 'FCO'),
 (1, 'MXP');
 
-INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES 
-('FCO', 'MXP'),
-('MXP', 'JFK');
+INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo, prezzo) VALUES 
+('FCO', 'MXP', 100),
+('MXP', 'JFK', 200);
 
 INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data_partenza, data_arrivo, orario_partenza, orario_arrivo) VALUES 
 ((SELECT id FROM tratte LIMIT 1), 1, 1, 'FCO', '2026-05-20', '2026-05-20', '10:00:00', '11:15:00'),
@@ -154,19 +156,19 @@ INSERT INTO gates (id, aereoporto_codice_IATA) VALUES
 (1, 'BCN');
 
 INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES 
-('FCO', 'LHR'),
-('LHR', 'JFK'),
-('CDG', 'FRA'),
-('FRA', 'FCO'),
-('MAD', 'FCO'),
-('MXP', 'CDG'),
-('FCO', 'AMS'),
-('AMS', 'DXB'),
-('DXB', 'NRT'),
-('NRT', 'SYD'),
-('JFK', 'LHR'),
-('CDG', 'BCN'),
-('BCN', 'MAD');
+('FCO', 'LHR', '100'),
+('LHR', 'JFK',  '200'),
+('CDG', 'FRA', '300'),
+('FRA', 'FCO', '400'),
+('MAD', 'FCO', '100'),
+('MXP', 'CDG' , '100'),
+('FCO', 'AMS'   , '100'),
+('AMS', 'DXB'  '250' ),
+('DXB', 'NRT'   , '200'),
+('NRT', 'SYD'   '100'),
+('JFK', 'LHR'   '200'),
+('CDG', 'BCN'   '300'),
+('BCN', 'MAD'   '100');
 
 INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data partenza, data arrivo, orario_partenza, orario_arrivo) VALUES 
 ((SELECT id FROM tratte WHERE aereoporto_partenza = 'FCO' AND aereoporto_arrivo = 'LHR' LIMIT 1), 2, 2, 'FCO', '2026-06-15', '2026-06-15','08:00:00','10:30:00'),
@@ -180,8 +182,10 @@ INSERT INTO card (tipo, numero, scadenza, cvv, nome, cognome) VALUES
 INSERT INTO documento (tipo, numero, scadenza) VALUES 
 ('Carta Identità', 'CA98765ZZ', '2031-05-20');
 
-INSERT INTO utenti (name, surname, email, password, documento_id, card_id) VALUES 
-('Paola', 'Bruni', 'paola@example.com', 'securepass', 2, 2);
+INSERT INTO utenti (name, surname, email, password, documento_id, card_id, admin) VALUES 
+('Paola', 'Bruni', 'paola@example.com', 'securepass', 2, 2, false),
+('Luca', 'Zotto', 'luca@example.com', 'securepass', 1, 1, true),
+('Giuseppe', 'Verdi', 'giuseppe@example.com', 'securepass', 1, 1, false);
 
 -- Update existing user to link card
 UPDATE utenti SET card_id = 1 WHERE email = 'luca@example.com';

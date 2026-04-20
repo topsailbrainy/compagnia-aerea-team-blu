@@ -6,4 +6,5 @@ export interface User {
     password: string;
     documento_id: number;
     card_id: number;
+    admin: boolean; 
 }

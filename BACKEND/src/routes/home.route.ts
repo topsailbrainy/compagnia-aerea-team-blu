@@ -1,5 +1,4 @@
 //GHOAN AIRLINES HOME
-
 import { Router } from "express";
 import { partenzaGET , arrivoGET } from "@/controller/aereoporti.controller";
 

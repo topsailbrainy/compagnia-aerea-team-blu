@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: Flight Search & Booking API
+  description: API completa per la ricerca voli, prenotazioni e gestione profilo utente.
+  version: 1.1.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Server di sviluppo
+
+paths:
+  # --- HOME / UTILS ---
+  /airports:
+    get:
+      tags: [Public]
+      summary: Lista aeroporti
+      description: Recupera gli aeroporti per popolare i menu a tendina della ricerca.
+      responses:
+        '200':
+          description: Successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Airport'
+
+  # --- SEARCH & FLIGHTS ---
+  /flights:
+    get:
+      tags: [Public]
+      summary: Cerca voli
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema: { type: string }
+        - name: destination
+          in: query
+          required: true
+          schema: { type: string }
+        - name: date
+          in: query
+          required: true
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: Voli trovati
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
+
+  # --- BOOKINGS (Biglietti/Prenotazioni) ---
+  /bookings:
+    get:
+      tags: [Bookings]
+      summary: Recupera le prenotazioni dell'utente loggato
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Storico prenotazioni
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    post:
+      tags: [Bookings]
+      summary: Crea una nuova prenotazione (Post biglietto)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '201':
+          description: Prenotazione confermata
+
+  /bookings/{id}:
+    get:
+      tags: [Bookings]
+      summary: Dettaglio singolo biglietto/prenotazione
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Dettaglio prenotazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+
+  # --- USER MANAGEMENT ---
+  /users:
+    post:
+      tags: [User]
+      summary: Registra un nuovo utente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Utente creato
+
+  /users/me:
+    get:
+      tags: [User]
+      summary: Ottieni profilo utente corrente
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Dati profilo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      tags: [User]
+      summary: Aggiorna profilo utente (Update)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Profilo aggiornato
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Airport:
+      type: object
+      properties:
+        code: { type: string, example: "MXP" }
+        city: { type: string, example: "Milano" }
+        name: { type: string, example: "Malpensa" }
+
+    Flight:
+      type: object
+      properties:
+        id: { type: string }
+        flightNumber: { type: string }
+        price: { type: number }
+        departure: { type: string, format: date-time }
+
+    Booking:
+      type: object
+      properties:
+        id: { type: string }
+        flightId: { type: string }
+        status: { type: string, enum: [CONFIRMED, PENDING, CANCELLED] }
+        totalAmount: { type: number }
+        createdAt: { type: string, format: date-time }
+
+    BookingRequest:
+      type: object
+      required: [flightId, passengers]
+      properties:
+        flightId: { type: string }
+        passengers:
+          type: array
+          items:
+            type: object
+            properties:
+              firstName: { type: string }
+              lastName: { type: string }
+
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        email: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+
+    UserCreate:
+      type: object
+      required: [email, password, firstName, lastName]
+      properties:
+        email: { type: string }
+        password: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+
+    UserUpdate:
+      type: object
+      properties:
+        firstName: { type: string }
+        lastName: { type: string }
+        email: { type: string }

@@ -5,14 +5,17 @@ import '../styles/BookingSidebar.css';
 
 const BookingSidebar: React.FC = () => {
   const navigate = useNavigate();
-  const { outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
+  const { isRoundTrip, outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
 
   const total = getTotalPrice();
   const taxes = getTaxPrice();
   const flightsCost = (outboundFlight?.price || 0) + (inboundFlight?.price || 0);
   
   const selectedCount = (outboundFlight ? 1 : 0) + (inboundFlight ? 1 : 0);
-  const isSelectionComplete = outboundFlight !== null && inboundFlight !== null;
+  const totalRequired = isRoundTrip ? 2 : 1;
+  const isSelectionComplete = isRoundTrip 
+    ? (outboundFlight !== null && inboundFlight !== null)
+    : (outboundFlight !== null);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -63,7 +66,7 @@ const BookingSidebar: React.FC = () => {
         <div className="summary-footer">
           <div className="summary-header">
             <span className="summary-label">Voli Selezionati</span>
-            <span className="selection-status">{selectedCount}/2 SELEZIONATI</span>
+            <span className="selection-status">{selectedCount}/{totalRequired} SELEZIONATI</span>
           </div>
           
           <div className="cost-breakdown">

@@ -5,7 +5,7 @@ import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/Booking.css';
 
 const Booking: React.FC = () => {
-  const { outboundFlight, inboundFlight, toggleFlight } = useStoreTariffa();
+  const { isRoundTrip, outboundFlight, inboundFlight, toggleFlight } = useStoreTariffa();
 
   return (
     <div className="booking-page">
@@ -15,7 +15,7 @@ const Booking: React.FC = () => {
           <div className="header-info">
             <h1 className="booking-title">Seleziona il tuo volo</h1>
             <div className="search-summary">
-              <span className="summary-badge">Andata e Ritorno</span>
+              <span className="summary-badge">{isRoundTrip ? 'Andata e Ritorno' : 'Sola Andata'}</span>
               <span className="material-symbols-outlined summary-icon">flight_takeoff</span>
               <span className="summary-city">Tokyo (HND)</span>
               <span className="material-symbols-outlined summary-icon">arrow_forward</span>
@@ -73,33 +73,35 @@ const Booking: React.FC = () => {
             </div>
 
             {/* Sezione Ritorno */}
-            <div className="flight-section">
-              <div className="section-title-wrapper">
-                <div className="section-icon-circle inbound">
-                  <span className="material-symbols-outlined">flight_land</span>
+            {isRoundTrip && (
+              <div className="flight-section">
+                <div className="section-title-wrapper">
+                  <div className="section-icon-circle inbound">
+                    <span className="material-symbols-outlined">flight_land</span>
+                  </div>
+                  <h2 className="section-title">
+                    Volo di Ritorno <span className="section-date">Ven, 24 Dic</span>
+                  </h2>
                 </div>
-                <h2 className="section-title">
-                  Volo di Ritorno <span className="section-date">Ven, 24 Dic</span>
-                </h2>
+                
+                <div className="cards-stack">
+                  <FlightCard 
+                    id="in-1"
+                    departureTime="11:20"
+                    departureCity="New York, JFK"
+                    arrivalTime="15:25"
+                    arrivalCity="Tokyo, HND"
+                    duration="14h 05m"
+                    price={729}
+                    stops="Diretto"
+                    isDirect={true}
+                    type="inbound"
+                    isSelected={inboundFlight?.id === 'in-1'}
+                    onSelect={() => toggleFlight({ id: 'in-1', type: 'inbound', price: 729 })}
+                  />
+                </div>
               </div>
-              
-              <div className="cards-stack">
-                <FlightCard 
-                  id="in-1"
-                  departureTime="11:20"
-                  departureCity="New York, JFK"
-                  arrivalTime="15:25"
-                  arrivalCity="Tokyo, HND"
-                  duration="14h 05m"
-                  price={729}
-                  stops="Diretto"
-                  isDirect={true}
-                  type="inbound"
-                  isSelected={inboundFlight?.id === 'in-1'}
-                  onSelect={() => toggleFlight({ id: 'in-1', type: 'inbound', price: 729 })}
-                />
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar */}

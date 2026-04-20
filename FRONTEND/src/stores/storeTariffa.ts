@@ -7,16 +7,21 @@ interface Flight {
 }
 
 interface TariffaState {
+  isRoundTrip: boolean;
   outboundFlight: Flight | null;
   inboundFlight: Flight | null;
+  setIsRoundTrip: (isRoundTrip: boolean) => void;
   toggleFlight: (flight: Flight) => void;
   getTotalPrice: () => number;
   getTaxPrice: () => number;
 }
 
 export const useStoreTariffa = create<TariffaState>((set, get) => ({
+  isRoundTrip: true,
   outboundFlight: null,
   inboundFlight: null,
+
+  setIsRoundTrip: (isRoundTrip: boolean) => set({ isRoundTrip }),
 
   toggleFlight: (flight: Flight) => {
     set((state) => {
@@ -33,9 +38,8 @@ export const useStoreTariffa = create<TariffaState>((set, get) => ({
   getTotalPrice: () => {
     const { outboundFlight, inboundFlight } = get();
     const flightTotal = (outboundFlight?.price || 0) + (inboundFlight?.price || 0);
-    // Supponiamo che le tasse siano il 15% del costo del volo o un valore fisso per semplicità se i voli non sono selezionati
     if (flightTotal === 0) return 0;
-    const taxes = flightTotal * 0.16; // Esempio per arrivare a valori simili a quelli statici
+    const taxes = flightTotal * 0.16;
     return flightTotal + taxes;
   },
 

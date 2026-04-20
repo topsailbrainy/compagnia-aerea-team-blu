@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
+import { useStoreTariffa } from '../stores/storeTariffa';
 import "react-datepicker/dist/react-datepicker.css";
 import '../styles/Hero.css';
 
@@ -8,6 +9,8 @@ const cities = ["Roma", "Milano", "Parigi", "Londra", "New York"];
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const setIsRoundTripStore = useStoreTariffa(state => state.setIsRoundTrip);
+  const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
   const [showFromDropdown, setShowFromDropdown] = useState(false);
@@ -17,6 +20,12 @@ const Hero: React.FC = () => {
 
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isRoundTrip) {
+      setReturnDate(null);
+    }
+  }, [isRoundTrip]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,7 +49,15 @@ const Hero: React.FC = () => {
   );
 
   const handleSearch = () => {
-    navigate('/booking');
+    const isFromCityValid = cities.includes(fromCity);
+    const isToCityValid = cities.includes(toCity);
+    const areCitiesDifferent = fromCity !== toCity;
+    const isDateValid = isRoundTrip ? (departureDate && returnDate) : departureDate;
+
+    if (fromCity && toCity && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
+      setIsRoundTripStore(isRoundTrip);
+      navigate('/booking');
+    }
   };
 
   return (
@@ -62,11 +79,23 @@ const Hero: React.FC = () => {
         <div className="search-bar">
           <div className="trip-types">
             <label className="trip-type-label">
-              <input type="radio" name="trip-type" defaultChecked className="radio-input" />
+              <input 
+                type="radio" 
+                name="trip-type" 
+                checked={isRoundTrip} 
+                onChange={() => setIsRoundTrip(true)}
+                className="radio-input" 
+              />
               <span className="radio-text">Andata e Ritorno</span>
             </label>
             <label className="trip-type-label">
-              <input type="radio" name="trip-type" className="radio-input" />
+              <input 
+                type="radio" 
+                name="trip-type" 
+                checked={!isRoundTrip}
+                onChange={() => setIsRoundTrip(false)}
+                className="radio-input" 
+              />
               <span className="radio-text">Sola Andata</span>
             </label>
           </div>
@@ -155,24 +184,28 @@ const Hero: React.FC = () => {
               </div>
             </div>
 
-            <div className="search-field no-border date-field">
+            <div className={`search-field no-border date-field ${!isRoundTrip ? 'opacity-50 pointer-events-none' : ''}`}>
               <span className="field-label">Ritorno</span>
               <div className="field-input-wrapper">
                 <span className="material-symbols-outlined icon-primary">calendar_month</span>
                 <DatePicker
                   selected={returnDate}
                   onChange={(date) => setReturnDate(date)}
-                  placeholderText="Aggiungi data"
+                  placeholderText={isRoundTrip ? "Aggiungi data" : "Sola andata"}
                   className="field-input"
                   dateFormat="dd/MM/yyyy"
                   minDate={departureDate || new Date()}
+                  readOnly={!isRoundTrip}
                 />
               </div>
             </div>
           </div>
 
           <div className="search-cta">
-            <button className="btn-search" onClick={handleSearch}>
+            <button 
+              className="btn-search" 
+              onClick={handleSearch}
+            >
               <span>Cerca Voli</span>
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>

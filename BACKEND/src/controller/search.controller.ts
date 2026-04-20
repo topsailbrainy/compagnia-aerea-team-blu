@@ -30,9 +30,13 @@ router.get("/search", async (req: Request, res: Response) => {
     }
 }); */
 
-export function getFlights (req: Request, res: Response) {
+export function flightsGet (req: Request, res: Response) {
     try {
         const rows = pool.query("SELECT * FROM tratte WHERE codice_IATA = $1 AND codice_IATA = $2 AND data_partenza = $3", [req.params.origin, req.params.destination, req.params.date]);
+        //const values: any[] = [(req.params.origin as string).toUpperCase(), (req.params.destination as string).toUpperCase(), req.params.date];
+        if (!req.params.origin || !req.params.destination) {
+            return res.status(400).json({ error: "Origine e destinazione obbligatorie." });
+        }
         return res.json(rows);
     } catch (error) {
         console.error(error);

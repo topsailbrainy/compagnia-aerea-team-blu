@@ -35,9 +35,11 @@ CREATE TABLE voli (
     tratte_id UUID REFERENCES tratte(id),
     aerei_id INTEGER REFERENCES aerei(id),
     gates_id INTEGER,
+    data_partenza DATE,
+    data_arrivo DATE,
     aereoporto_codice_IATA VARCHAR(3),
-    orario_partenza TIMESTAMP,
-    orario_arrivo TIMESTAMP,
+    orario_partenza TIME,
+    orario_arrivo TIME,
     FOREIGN KEY (gates_id, aereoporto_codice_IATA) REFERENCES gates(id, aereoporto_codice_IATA)
 );
 
@@ -102,8 +104,12 @@ INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES
 ('FCO', 'MXP'),
 ('MXP', 'JFK');
 
-INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, orario_partenza, orario_arrivo) VALUES 
-((SELECT id FROM tratte LIMIT 1), 1, 1, 'FCO', '2026-05-20 10:00:00', '2026-05-20 11:15:00');
+INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data_partenza, data_arrivo, orario_partenza, orario_arrivo) VALUES 
+((SELECT id FROM tratte LIMIT 1), 1, 1, 'FCO', '2026-05-20', '2026-05-20', '10:00:00', '11:15:00'),
+((SELECT id FROM tratte LIMIT 1), 2, 2, 'FCO', '2026-06-15', '2026-06-15', '08:00:00', '10:30:00'),
+((SELECT id FROM tratte LIMIT 1), 1, 1, 'MXP', '2026-07-10', '2026-07-10', '14:00:00', '22:00:00'),
+((SELECT id FROM tratte LIMIT 1), 2, 2, 'MXP', '2026-08-05', '2026-08-05', '09:00:00', '10:45:00')
+;
 
 INSERT INTO documento (tipo, numero, scadenza) VALUES 
 ('Passaporto', 'AB1234567', '2030-01-01');
@@ -162,10 +168,10 @@ INSERT INTO tratte (aereoporto_partenza, aereoporto_arrivo) VALUES
 ('CDG', 'BCN'),
 ('BCN', 'MAD');
 
-INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, orario_partenza, orario_arrivo) VALUES 
-((SELECT id FROM tratte WHERE aereoporto_partenza = 'FCO' AND aereoporto_arrivo = 'LHR' LIMIT 1), 2, 2, 'FCO', '2026-06-15 08:00:00', '2026-06-15 10:30:00'),
-((SELECT id FROM tratte WHERE aereoporto_partenza = 'MXP' AND aereoporto_arrivo = 'JFK' LIMIT 1), 3, 1, 'MXP', '2026-07-10 14:00:00', '2026-07-10 22:00:00'),
-((SELECT id FROM tratte WHERE aereoporto_partenza = 'CDG' AND aereoporto_arrivo = 'FRA' LIMIT 1), 4, 1, 'CDG', '2026-08-05 09:00:00', '2026-08-05 10:45:00');
+INSERT INTO voli (tratte_id, aerei_id, gates_id, aereoporto_codice_IATA, data partenza, data arrivo, orario_partenza, orario_arrivo) VALUES 
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'FCO' AND aereoporto_arrivo = 'LHR' LIMIT 1), 2, 2, 'FCO', '2026-06-15', '2026-06-15','08:00:00','10:30:00'),
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'MXP' AND aereoporto_arrivo = 'JFK' LIMIT 1), 3, 1, 'MXP', '2026-07-10', '2026-07-10', '14:00:00', '22:00:00'),
+((SELECT id FROM tratte WHERE aereoporto_partenza = 'CDG' AND aereoporto_arrivo = 'FRA' LIMIT 1), 4, 1, 'CDG', '2026-08-05', '2026-08-05', '09:00:00', '10:45:00');
 
 INSERT INTO card (tipo, numero, scadenza, cvv, nome, cognome) VALUES 
 ('Visa', '1234567890', '2028-12-31', '123', 'Luca', 'Zani'),

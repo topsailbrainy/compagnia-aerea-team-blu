@@ -3,11 +3,11 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import { pool } from "../db";
 import { Tratta } from "@/types/tratta.type";
-
+import { Voli } from "@/types/flights.type";
 //get dei voli
 
 export const router = Router();
-
+/* 
 router.get("/search", async (req: Request, res: Response) => {
     const { origin, destination, date } = req.query;
     // presenza dei parametri origin e destination nel query string
@@ -28,7 +28,18 @@ router.get("/search", async (req: Request, res: Response) => {
             console.error(error);
             return res.status(500).json({ error: "Errore interno del server" });
     }
-});
+}); */
+
+export function getFlights (req: Request, res: Response) {
+    try {
+        const rows = pool.query("SELECT * FROM tratte WHERE codice_IATA = $1 AND codice_IATA = $2 AND data_partenza = $3", [req.params.origin, req.params.destination, req.params.date]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
+
 
 
 

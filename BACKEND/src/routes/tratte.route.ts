@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { partenzaGET , arrivoGET } from "@/controller/aereoporti.controller";
 
-
 export const router = Router();
+
+
+
 // barra di ricerca che restituisce areoporti partenza e arrivo
 router.get("/search", partenzaGET, arrivoGET)
 /* router.get("/partenza", partenzaGET);

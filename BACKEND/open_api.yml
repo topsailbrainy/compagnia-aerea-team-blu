@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+  title: Flight Search & Booking API
+  description: API adattata alla struttura del database SQL con gestione Auth e Profilo.
+  version: 1.3.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Server di sviluppo
+
+paths:
+  # --- AUTHENTICATION ---
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login utente
+      description: Scambia email e password per un token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: Login effettuato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+        '401':
+          description: Credenziali non valide
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout utente
+      security: [{ bearerAuth: [] }]
+      responses:
+        '204':
+          description: Logout effettuato con successo
+
+  # --- AIRPORTS & FLIGHTS ---
+  /airports:
+    get:
+      tags: [Public]
+      summary: Lista aeroporti
+      responses:
+        '200':
+          description: Successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Airport'
+
+  /flights:
+    get:
+      tags: [Public]
+      summary: Cerca voli disponibili
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema: { type: string, maxLength: 3 }
+        - name: destination
+          in: query
+          required: true
+          schema: { type: string, maxLength: 3 }
+        - name: date
+          in: query
+          required: true
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: Lista voli trovati
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
+
+  # --- USER PROFILE & DOCUMENTS ---
+  /users/me:
+    get:
+      tags: [User]
+      summary: Ottiene il profilo completo
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Dati profilo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/me/document:
+    put:
+      tags: [User]
+      summary: Aggiorna o inserisce il documento d'identità
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+      responses:
+        '200':
+          description: Documento aggiornato
+
+  # --- USER CARDS (PAGAMENTI) ---
+  /users/me/cards:
+    post:
+      tags: [User]
+      summary: Aggiunge una nuova carta di credito
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+      responses:
+        '201':
+          description: Carta aggiunta con successo
+
+  /users/me/cards/{id}:
+    delete:
+      tags: [User]
+      summary: Rimuove una carta di credito
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Carta rimossa con successo
+
+  # --- BOOKINGS ---
+  /bookings:
+    get:
+      tags: [Bookings]
+      summary: Recupera le prenotazioni
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Lista prenotazioni
+    post:
+      tags: [Bookings]
+      summary: Crea una nuova prenotazione
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '201':
+          description: Prenotazione creata
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Airport:
+      type: object
+      properties:
+        codice_iata: { type: string }
+        name: { type: string }
+        city: { type: string }
+        country: { type: string }
+
+    Flight:
+      type: object
+      properties:
+        id: { type: integer }
+        tratte_id: { type: string, format: uuid }
+        data_partenza: { type: string, format: date }
+        orario_partenza: { type: string }
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        surname: { type: string }
+        email: { type: string }
+        documento: { $ref: '#/components/schemas/Document' }
+        card: { $ref: '#/components/schemas/Card' }
+
+    Document:
+      type: object
+      required: [tipo, numero, scadenza]
+      properties:
+        tipo: { type: string, example: "Passaporto" }
+        numero: { type: string }
+        scadenza: { type: string, format: date }
+
+    Card:
+      type: object
+      required: [tipo, numero, scadenza, cvv, nome, cognome]
+      properties:
+        tipo: { type: string, example: "Visa" }
+        numero: { type: string, maxLength: 10 }
+        scadenza: { type: string, format: date }
+        cvv: { type: string, maxLength: 3 }
+        nome: { type: string }
+        cognome: { type: string }
+
+    BookingRequest:
+      type: object
+      required: [volo_id]
+      properties:
+        volo_id: { type: integer }

@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/FlightCard.css';
 
 interface FlightCardProps {
+  id: string;
   departureTime: string;
   departureCity: string;
   arrivalTime: string;
@@ -11,9 +12,12 @@ interface FlightCardProps {
   stops: string;
   isDirect?: boolean;
   type?: 'outbound' | 'inbound';
+  isSelected?: boolean;
+  onSelect?: () => void;
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({
+  id,
   departureTime,
   departureCity,
   arrivalTime,
@@ -22,10 +26,12 @@ const FlightCard: React.FC<FlightCardProps> = ({
   price,
   stops,
   isDirect,
-  type = 'outbound'
+  type = 'outbound',
+  isSelected = false,
+  onSelect
 }) => {
   return (
-    <div className={`flight-card group ${type}`}>
+    <div className={`flight-card group ${type} ${isSelected ? 'selected' : ''}`}>
       <div className="flight-card-main">
         <div className="flight-info-grid">
           <div className="time-block">
@@ -58,7 +64,12 @@ const FlightCard: React.FC<FlightCardProps> = ({
         <div className="price-selection">
           <p className="price-label">Da</p>
           <p className="price-value">${price}</p>
-          <button className="btn-select">SELEZIONA</button>
+          <button 
+            className={`btn-select ${isSelected ? 'btn-selected' : ''}`}
+            onClick={onSelect}
+          >
+            {isSelected ? 'SELEZIONATO' : 'SELEZIONA'}
+          </button>
         </div>
       </div>
       

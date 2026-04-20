@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
     <nav className="navbar-container">
       <div className="navbar-content">
         <div className="navbar-logo">
-          Gohan Airlines
+          Ghoan Airlines
         </div>
         
         <div className="navbar-links">

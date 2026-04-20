@@ -1,9 +1,12 @@
 import React from 'react';
 import FlightCard from '../components/FlightCard';
 import BookingSidebar from '../components/BookingSidebar';
+import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/Booking.css';
 
 const Booking: React.FC = () => {
+  const { outboundFlight, inboundFlight, toggleFlight } = useStoreTariffa();
+
   return (
     <div className="booking-page">
       <div className="booking-container">
@@ -20,15 +23,6 @@ const Booking: React.FC = () => {
               <span className="summary-divider">|</span>
               <span className="summary-passengers">2 Viaggiatori</span>
             </div>
-          </div>
-          
-          <div className="summary-total-card">
-            <div className="total-header">
-              <p className="total-label">Tariffa Totale</p>
-              <span className="material-symbols-outlined wallet-icon">account_balance_wallet</span>
-            </div>
-            <div className="total-amount">$1,458.00</div>
-            <p className="total-note">Include tasse e commissioni</p>
           </div>
         </section>
 
@@ -48,6 +42,7 @@ const Booking: React.FC = () => {
               
               <div className="cards-stack">
                 <FlightCard 
+                  id="out-1"
                   departureTime="09:15"
                   departureCity="Tokyo, HND"
                   arrivalTime="08:35"
@@ -57,8 +52,11 @@ const Booking: React.FC = () => {
                   stops="Diretto"
                   isDirect={true}
                   type="outbound"
+                  isSelected={outboundFlight?.id === 'out-1'}
+                  onSelect={() => toggleFlight({ id: 'out-1', type: 'outbound', price: 729 })}
                 />
                 <FlightCard 
+                  id="out-2"
                   departureTime="14:40"
                   departureCity="Tokyo, HND"
                   arrivalTime="16:25"
@@ -67,7 +65,9 @@ const Booking: React.FC = () => {
                   price={580}
                   stops="1 Scalo (ICN)"
                   isDirect={false}
-                  type="inbound"
+                  type="outbound"
+                  isSelected={outboundFlight?.id === 'out-2'}
+                  onSelect={() => toggleFlight({ id: 'out-2', type: 'outbound', price: 580 })}
                 />
               </div>
             </div>
@@ -85,6 +85,7 @@ const Booking: React.FC = () => {
               
               <div className="cards-stack">
                 <FlightCard 
+                  id="in-1"
                   departureTime="11:20"
                   departureCity="New York, JFK"
                   arrivalTime="15:25"
@@ -93,7 +94,9 @@ const Booking: React.FC = () => {
                   price={729}
                   stops="Diretto"
                   isDirect={true}
-                  type="outbound"
+                  type="inbound"
+                  isSelected={inboundFlight?.id === 'in-1'}
+                  onSelect={() => toggleFlight({ id: 'in-1', type: 'inbound', price: 729 })}
                 />
               </div>
             </div>

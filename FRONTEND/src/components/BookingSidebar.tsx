@@ -1,9 +1,38 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
+import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/BookingSidebar.css';
 
 const BookingSidebar: React.FC = () => {
+  const navigate = useNavigate();
+  const { outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
+
+  const total = getTotalPrice();
+  const taxes = getTaxPrice();
+  const flightsCost = (outboundFlight?.price || 0) + (inboundFlight?.price || 0);
+  
+  const selectedCount = (outboundFlight ? 1 : 0) + (inboundFlight ? 1 : 0);
+  const isSelectionComplete = outboundFlight !== null && inboundFlight !== null;
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(value);
+  };
+
   return (
     <aside className="booking-sidebar">
+
+      <div className="summary-total-card">
+            <div className="total-header">
+              <p className="total-label">Tariffa Totale</p>
+              <span className="material-symbols-outlined wallet-icon">account_balance_wallet</span>
+            </div>
+            <div className="total-amount">{formatCurrency(total)}</div>
+            <p className="total-note">Include tasse e commissioni</p>
+          </div>
+
       <div className="fare-details-card">
         <h3 className="details-title">Dettagli Tariffa</h3>
         
@@ -34,21 +63,25 @@ const BookingSidebar: React.FC = () => {
         <div className="summary-footer">
           <div className="summary-header">
             <span className="summary-label">Voli Selezionati</span>
-            <span className="selection-status">2/2 SELEZIONATI</span>
+            <span className="selection-status">{selectedCount}/2 SELEZIONATI</span>
           </div>
           
           <div className="cost-breakdown">
             <div className="cost-row">
-              <span>Adulti (x2)</span>
-              <span className="cost-value">$1,250.00</span>
+              <span>Voli</span>
+              <span className="cost-value">{formatCurrency(flightsCost)}</span>
             </div>
             <div className="cost-row">
               <span>Tasse e Commissioni</span>
-              <span className="cost-value">$208.00</span>
+              <span className="cost-value">{formatCurrency(taxes)}</span>
             </div>
           </div>
 
-          <button className="btn-confirm">
+          <button 
+            className="btn-confirm" 
+            disabled={!isSelectionComplete}
+            onClick={() => navigate('/payment')}
+          >
             CONFERMA SELEZIONE
           </button>
         </div>

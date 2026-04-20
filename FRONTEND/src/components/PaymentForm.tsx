@@ -78,8 +78,8 @@ const PaymentForm: React.FC = () => {
             <label className="input-label">Titolare della Carta</label>
             <input className="input-field" placeholder="Nome completo sulla carta" type="text" />
           </div>
-          <div className="input-grid cols-4" style={{ marginTop: '1.5rem' }}>
-            <div className="input-group" style={{ gridColumn: 'span 2' }}>
+          <div className="input-grid" style={{ marginTop: '1.5rem', gridTemplateColumns: '2.5fr 1fr 0.5fr' }}>
+            <div className="input-group">
               <label className="input-label">Numero Carta</label>
               <input className="input-field" placeholder="0000 0000 0000 0000" type="text" />
             </div>

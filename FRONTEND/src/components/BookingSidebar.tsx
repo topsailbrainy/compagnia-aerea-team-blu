@@ -2,11 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/BookingSidebar.css';
+import { useStoreTimer } from '../stores/storeTimer';
 
 const BookingSidebar: React.FC = () => {
   const navigate = useNavigate();
   const { isRoundTrip, outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
-
+  const { getTimer, setTimer } = useStoreTimer();
+  
   const total = getTotalPrice();
   const taxes = getTaxPrice();
   const flightsCost = (outboundFlight?.price || 0) + (inboundFlight?.price || 0);
@@ -23,6 +25,13 @@ const BookingSidebar: React.FC = () => {
       currency: 'USD',
     }).format(value);
   };
+
+  const goToPayment = () => {
+    if(getTimer()<1000){
+      setTimer();
+    }
+    navigate('/payment')
+  }
 
   return (
     <aside className="booking-sidebar">
@@ -83,7 +92,7 @@ const BookingSidebar: React.FC = () => {
           <button 
             className="btn-confirm" 
             disabled={!isSelectionComplete}
-            onClick={() => navigate('/payment')}
+            onClick={goToPayment}
           >
             CONFERMA SELEZIONE
           </button>

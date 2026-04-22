@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { useStoreTariffa } from '../stores/storeTariffa';
+import { useStoreTimer } from '../stores/storeTimer';
 
 const PaymentSummary: React.FC = () => {
+  const navigate = useNavigate();
   const { outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
+  const { setTimer } = useStoreTimer();
 
   const total = getTotalPrice();
   const taxes = getTaxPrice();
@@ -65,7 +69,13 @@ const PaymentSummary: React.FC = () => {
           </div>
         </div>
 
-        <button className="btn-pay">
+        <button
+          className="btn-pay"
+          onClick={() => {
+            setTimer(0);
+            navigate('/booking-confirmed');
+          }}
+        >
           Completa Pagamento
           <span className="material-symbols-outlined">arrow_forward</span>
         </button>

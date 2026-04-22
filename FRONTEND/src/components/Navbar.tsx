@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
+import Timer from './Timer';
 import '../styles/Navbar.css';
+import { useStoreTimer } from '../stores/storeTimer';
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [lang, setLang] = useState<'IT' | 'EN'>('IT');
+  const { getTimer } = useStoreTimer();
 
   return (
     <nav className="navbar-container">
       <div className="navbar-content">
-        <div className="navbar-logo">
+        <div
+          className="navbar-logo"
+          onClick={() => navigate('/')}
+        >
           Ghoan Airlines
-        </div>
-        
-        <div className="navbar-links">
-          <a href="#" className="navbar-link active">Voli</a>
-          <a href="#" className="navbar-link">Destinazioni</a>
-          <a href="#" className="navbar-link">Offerte</a>
         </div>
 
         <div className="navbar-actions">
@@ -34,22 +36,35 @@ const Navbar: React.FC = () => {
             </span>
           </div>
 
-          <div className="cart-timer">
-            <div className="cart-icon-wrapper">
-              <span className="material-symbols-outlined text-primary">shopping_cart</span>
+          {getTimer() > 0 && <>
+            <div className="cart-timer">
+              <div className="cart-icon-wrapper">
+                <span className="material-symbols-outlined text-primary">shopping_cart</span>
+              </div>
+              <div className="timer-info">
+                <span className="timer-label">Tempo rimasto</span>
+                <span className="timer-value">
+                  <Timer />
+                </span>
+              </div>
             </div>
-            <div className="timer-info">
-              <span className="timer-label">Tempo rimasto</span>
-              <span className="timer-value">20:00</span>
-            </div>
-          </div>
-          
-          <button className="btn-signin">
+          </>
+          }
+
+          <button
+            className="btn-signin"
+            onClick={() => navigate('/login')}
+          >
             <span className="material-symbols-outlined">person</span>
             <span>Accedi</span>
           </button>
           
-          <button className="btn-signup">Registrati</button>
+          <button
+            className="btn-signup"
+            onClick={() => navigate('/register')}
+          >
+            Registrati
+          </button>
         </div>
       </div>
     </nav>

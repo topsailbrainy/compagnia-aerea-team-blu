@@ -1,79 +1,93 @@
-
 import { Request, Response } from "express";
 import { pool } from "../db";
 import { User } from "../types/user.type";  
-import { CustomRequest } from "@/middleware/authorization.MW";
+import { CustomRequest } from "../middleware/authorization.MW";
+import argon2 from "argon2";
 
-export function userGET(req: CustomRequest, res: Response) {
+export async function userGET(req: CustomRequest, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM utenti");
-        return res.json(rows);
+        const result = await pool.query("SELECT * FROM utenti");
+        return res.json(result.rows);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
 
-export function userGETById(req: CustomRequest, res: Response) {
+export async function userGETById(req: CustomRequest, res: Response) {
     try {
         if (req.user?.id != (req.params.id as string)) {
             return res.status(403).json({ error: 'Accesso non autorizzato' });
         }
-        const rows = pool.query("SELECT * FROM utenti WHERE id = $1", [req.params.id]);
-        return res.json(rows);
+        const result = await pool.query("SELECT * FROM utenti WHERE id = $1", [req.params.id]);
+        return res.json(result.rows[0]);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
 
-export function userDELETE(req: Request, res: Response) {
+export async function userDELETE(req: Request, res: Response) {
     try {
-        const rows = pool.query("DELETE FROM utenti WHERE id = $1", [req.params.id]);
-        return res.json(rows);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Errore interno del server" });
-    }
-}
-export function userPOST(req: Request, res: Response) {
-    try {
-        const rows = pool.query("INSERT INTO utenti (email, password) VALUES ($1, $2)", [req.body.email, req.body.password]);
-        return res.json(rows);
+        await pool.query("DELETE FROM utenti WHERE id = $1", [req.params.id]);
+        return res.json({ message: "Utente eliminato con successo" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
 
-export function userUPDATE(req: Request, res: Response) {
+export async function userPOST(req: Request, res: Response) {
     try {
-        const rows = pool.query("UPDATE utenti SET email = $1, password = $2 WHERE id = $3", [req.body.email, req.body.password, req.params.id]);
-        return res.json(rows);
+        const { email, password } = req.body;
+        const hashedPassword = await argon2.hash(password);
+        const result = await pool.query("INSERT INTO utenti (email, password) VALUES ($1, $2) RETURNING id, email", [email, hashedPassword]);
+        return res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
 
-export function userDataGET(req: Request, res: Response) {
+export async function userUPDATE(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM utenti WHERE id = $1 AND INNER JOIN documento ON documento.id = utenti.documento_id" , [req.params.id]);
-        return res.json(rows);
+        const { email, password } = req.body;
+        let query = "UPDATE utenti SET email = $1";
+        let params = [email];
+
+        if (password) {
+            const hashedPassword = await argon2.hash(password);
+            query += ", password = $2 WHERE id = $3";
+            params.push(hashedPassword, req.params.id);
+        } else {
+            query += " WHERE id = $2";
+            params.push(req.params.id);
+        }
+
+        const result = await pool.query(query, params);
+        return res.json({ message: "Utente aggiornato con successo" });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
 
-
-export function cardDataGET(req: Request, res: Response) {
+export async function userDataGET(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM card WHERE id=$1 AND INNER JOIN utenti ON utenti.card_id = card.id" , [req.params.id]);
-        return res.json(rows);
+        const result = await pool.query("SELECT * FROM utenti INNER JOIN documento ON documento.id = utenti.documento_id WHERE utenti.id = $1" , [req.params.id]);
+        return res.json(result.rows[0]);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
-//per l'autocompletamento gemini dice di usare uno useEffect nel frontend
+
+export async function cardDataGET(req: Request, res: Response) {
+    try {
+        const result = await pool.query("SELECT * FROM card INNER JOIN utenti ON utenti.card_id = card.id WHERE utenti.id = $1" , [req.params.id]);
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}

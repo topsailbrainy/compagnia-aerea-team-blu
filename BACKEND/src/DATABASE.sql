@@ -66,7 +66,7 @@ CREATE TABLE utenti(
     name VARCHAR(50),
     surname VARCHAR(50),
     email VARCHAR(50),
-    password VARCHAR(50),
+    password VARCHAR(255),
     documento_id INTEGER REFERENCES documento(id),
     card_id INTEGER REFERENCES card(id),
     codice_fiscale VARCHAR(16),

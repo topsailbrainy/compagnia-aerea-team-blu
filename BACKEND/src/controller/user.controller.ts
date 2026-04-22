@@ -66,6 +66,7 @@ export function userDataGET(req: Request, res: Response) {
     }
 }
 
+
 export function cardDataGET(req: Request, res: Response) {
     try {
         const rows = pool.query("SELECT * FROM card WHERE id=$1 AND INNER JOIN utenti ON utenti.card_id = card.id" , [req.params.id]);
@@ -75,3 +76,4 @@ export function cardDataGET(req: Request, res: Response) {
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
+//per l'autocompletamento gemini dice di usare uno useEffect nel frontend

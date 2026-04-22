@@ -1,13 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import argon2 from 'argon2';
 import { pool } from '../db'; // La tua istanza di connessione al DB
+import NodeCache from 'node-cache';
 
-interface CustomRequest extends Request {
+export interface CustomRequest extends Request {
     user?: {
-    id: string;
-    admin: boolean;
+        id: string;
+        admin: boolean;
     };
 }
+
+const cache = new NodeCache({ stdTTL: 600, checkperiod: 60 });
 
 export const authMW = async (req: CustomRequest, res: Response, next: NextFunction) => {
     // 1. Estrazione header Authorization
@@ -22,6 +25,13 @@ export const authMW = async (req: CustomRequest, res: Response, next: NextFuncti
     const base64Credentials = authHeader.split(' ')[1];
     const credentials = Buffer.from(base64Credentials!, 'base64').toString('ascii');
     const [email, password] = credentials.split(':');
+
+    if (cache.has(base64Credentials!)) {
+        const cachedUser = cache.get(base64Credentials!) as { id: string; admin: boolean };
+        req.user = { id: cachedUser.id, admin: cachedUser.admin };
+        next();
+        return;
+    }
 
     try {
         // 3. Ricerca dell'utente nel DB (Tabella utenti )
@@ -40,9 +50,11 @@ export const authMW = async (req: CustomRequest, res: Response, next: NextFuncti
             return res.status(401).json({ error: 'Credenziali non valide' });
         }
 
-        if (!user.admin) {
-            return res.status(403).json({ error: 'Accesso non autorizzato' });
-        }
+        // if (!user.admin) {
+        //     return res.status(403).json({ error: 'Accesso non autorizzato' });
+        // }
+
+        cache.set(base64Credentials!, { id: user.id, admin: user.admin });
 
         // 5. Salvataggio dell'ID utente nella richiesta per usi futuri
         req.user = { id: user.id , admin: user.admin };

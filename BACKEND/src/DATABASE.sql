@@ -69,6 +69,8 @@ CREATE TABLE utenti(
     password VARCHAR(50),
     documento_id INTEGER REFERENCES documento(id),
     card_id INTEGER REFERENCES card(id),
+    codice_fiscale VARCHAR(16),
+    data_nascita DATE,
     admin BOOLEAN
 );
 

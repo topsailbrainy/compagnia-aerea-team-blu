@@ -6,6 +6,7 @@ import { authMW } from "./middleware/authorization.MW";
 import { router as authrouter } from "./routes/auth.route";
 
 
+
 const app = express();
 
 app.use(express.json()); //middleware

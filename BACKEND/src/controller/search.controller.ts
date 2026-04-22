@@ -1,12 +1,12 @@
 //SEARCH ROUTES CON WIDGET PER RICERCA BIGLIETTO, PRENOTAZIONE, PAGAMENTO
-import { Router } from "express";
+
 import { Request, Response } from "express";
 import { pool } from "../db";
 import { Tratta } from "@/types/tratta.type";
 import { Voli } from "@/types/flights.type";
 //get dei voli
 
-export const router = Router();
+
 /* 
 router.get("/search", async (req: Request, res: Response) => {
     const { origin, destination, date } = req.query;
@@ -47,5 +47,4 @@ export function flightsGet (req: Request, res: Response) {
 
 
 
-export default router;
                 

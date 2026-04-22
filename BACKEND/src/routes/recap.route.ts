@@ -6,6 +6,10 @@ import { ticketPOST } from "@/controller/ticket.controller";
 export const router = Router();
 
 router.get("/recap", recapGet, ticketPOST)
+
+
+
+
     /* async (req: Request, res: Response) => {
     const { id_prenotazione } = req.params;
 

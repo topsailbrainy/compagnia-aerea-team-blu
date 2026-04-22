@@ -1,10 +1,11 @@
 import { Router, Request, Response } from "express";
 import { pool } from "../db";
 import { recapGet } from "@/controller/recap.controller";
+import { ticketPOST } from "@/controller/ticket.controller";
 
 export const router = Router();
 
-router.get("/recap", recapGet)
+router.get("/recap", recapGet, ticketPOST)
     /* async (req: Request, res: Response) => {
     const { id_prenotazione } = req.params;
 

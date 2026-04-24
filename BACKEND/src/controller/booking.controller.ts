@@ -32,3 +32,23 @@ export function bookingPOST(req: Request, res: Response) {
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
+
+export function bookingDELETE(req: Request, res: Response) {
+    try {
+        const rows = pool.query("DELETE FROM prenotazioni WHERE id = $1", [req.params.id]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
+
+export function bookingUPDATE(req: Request, res: Response) {
+    try {
+        const rows = pool.query("UPDATE prenotazioni SET id_utente = $1 WHERE id = $2", [req.body.id_utente, req.params.id]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}

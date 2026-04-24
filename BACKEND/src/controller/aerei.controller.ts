@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import { pool } from "../db";
-import { Ticket } from "../types/ticket.type";
-import { authMW } from "../middleware/authorization.MW";
+import { Aerei } from "../types/aerei.type";
 
-export  function ticketGET(req: Request, res: Response) {
+export function aereiGet(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM biglietto");
+        const rows = pool.query("SELECT * FROM aerei");
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -13,9 +12,9 @@ export  function ticketGET(req: Request, res: Response) {
     }
 }
 
-export function ticketGETbyId(req: Request, res: Response) {
+export function aereiGetById(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM biglietto WHERE id = $1", [req.params.id]);
+        const rows = pool.query("SELECT * FROM aerei WHERE id = $1", [req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -23,9 +22,9 @@ export function ticketGETbyId(req: Request, res: Response) {
     }
 }
 
-export function ticketPOST(req: Request, res: Response) {
+export function aereiPost(req: Request, res: Response) {
     try {
-        const rows = pool.query("INSERT INTO biglietto (id_prenotazione,id_utente, id_volo ) VALUES ($1, $2, $3)", [req.body.id_prenotazione]);
+        const rows = pool.query("INSERT INTO aerei (codice, modello, capienza) VALUES ($1, $2, $3)", [req.body.codice, req.body.modello, req.body.capienza]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -33,9 +32,9 @@ export function ticketPOST(req: Request, res: Response) {
     }
 }
 
-export function ticketDELETE(req: Request, res: Response) {
+export function aereiUpdate(req: Request, res: Response) {
     try {
-        const rows = pool.query("DELETE FROM biglietto WHERE id, id_utente VALUES ($1, $2)", [req.params.id]);
+        const rows = pool.query("UPDATE aerei SET codice = $1, modello = $2, capienza = $3 WHERE id = $4", [req.body.codice, req.body.modello, req.body.capienza, req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -43,13 +42,13 @@ export function ticketDELETE(req: Request, res: Response) {
     }
 }
 
-
-export function ticketUPDATE(req: Request, res: Response) {
+export function aereiDelete(req: Request, res: Response) {
     try {
-        const rows = pool.query("UPDATE biglietto SET id_prenotazione = $1 WHERE id = $2", [req.body.id_prenotazione, req.params.id]);
+        const rows = pool.query("DELETE FROM aerei WHERE id = $1", [req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
+

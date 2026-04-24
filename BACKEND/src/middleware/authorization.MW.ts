@@ -2,18 +2,22 @@ import { Request, Response, NextFunction } from 'express';
 import * as jose from 'jose';
 import NodeCache from 'node-cache';
 
-export interface CustomRequest extends Request {
-    user: {
-        id: string;
-        email?: string;
-        admin: boolean;
-    };
+declare global {
+     namespace Express {
+         interface Request {
+             user?: {
+                id: string;
+                email?: string;
+                admin: boolean;
+            }
+         }
+     }
 }
 
 const cache = new NodeCache({ stdTTL: 600, checkperiod: 60 });
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback_secret');
 
-export const authMW = async (req: CustomRequest, res: Response, next: NextFunction) => {
+export const authMW = async (req: Request, res: Response, next: NextFunction) => {
     // 1. Estrazione del token dai cookies
     const token = req.cookies?.token;
 
@@ -23,7 +27,7 @@ export const authMW = async (req: CustomRequest, res: Response, next: NextFuncti
 
     // 2. Controllo della cache
     if (cache.has(token)) {
-        req.user = cache.get(token) as CustomRequest['user'];
+        req.user = (cache.get(token) as Request['user'])!;
         next();
         return;
     }

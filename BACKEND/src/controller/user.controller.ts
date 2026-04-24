@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { pool } from "../db";
 import { User } from "../types/user.type";  
-import { CustomRequest } from "../middleware/authorization.MW";
 import argon2 from "argon2";
 
-export async function userGET(req: CustomRequest, res: Response) {
+export async function userGET(req: Request, res: Response) {
     try {
         const result = await pool.query("SELECT * FROM utenti");
         return res.json(result.rows);
@@ -14,7 +13,7 @@ export async function userGET(req: CustomRequest, res: Response) {
     }
 }
 
-export async function userGETById(req: CustomRequest, res: Response) {
+export async function userGETById(req: Request, res: Response) {
     try {
         if (req.user?.id != (req.params.id as string)) {
             return res.status(403).json({ error: 'Accesso non autorizzato' });
@@ -91,3 +90,24 @@ export async function cardDataGET(req: Request, res: Response) {
         return res.status(500).json({ error: "Errore interno del server" });
     }
 }
+
+export async function cardDataForAdmin(req: Request, res: Response) {
+    try {
+        const result = await pool.query("SELECT numero, nome, cognome, scadenza FROM card INNER JOIN utenti ON utenti.card_id = card.id WHERE utenti.id = $1" , [req.params.id]);
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
+
+export async function documentDataforAdmin(req: Request, res: Response) {
+    try {
+        const result = await pool.query("SELECT * FROM documento INNER JOIN utenti ON utenti.documento_id = documento.id WHERE utenti.id = $1" , [req.params.id]);
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
+    

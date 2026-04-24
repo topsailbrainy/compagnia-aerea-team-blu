@@ -30,7 +30,7 @@ router.get("/search", async (req: Request, res: Response) => {
     }
 }); */
 
-export function flightsGet (req: Request, res: Response) {
+export function trattaGet (req: Request, res: Response) {
     try {
         const rows = pool.query("SELECT * FROM tratte WHERE aereporto_partenza = $1 AND aereporto_arrivo = $2 AND data_partenza = $3 AND prezzo = $4", [req.params.origin, req.params.destination, req.params.date]);
         //const values: any[] = [(req.params.origin as string).toUpperCase(), (req.params.destination as string).toUpperCase(), req.params.date];
@@ -44,7 +44,35 @@ export function flightsGet (req: Request, res: Response) {
     }
 }
 
+export function trattaPost (req: Request, res: Response) {
+    try {
+        const rows = pool.query("INSERT INTO tratte (codice_IATA, codice_IATA, data_partenza, prezzo) VALUES ($1, $2, $3, $4)", [req.body.origin, req.body.destination, req.body.date, req.body.price]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
 
+export function trattaDelete (req: Request, res: Response) {
+    try {
+        const rows = pool.query("DELETE FROM tratte WHERE id = $1", [req.params.id]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
+
+export function prezzoUpdate (req: Request, res: Response) {
+    try {
+        const rows = pool.query("UPDATE tratte SET prezzo = $1 WHERE id = $2", [req.body.price, req.params.id]);
+        return res.json(rows);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Errore interno del server" });
+    }
+}
 
 
                 

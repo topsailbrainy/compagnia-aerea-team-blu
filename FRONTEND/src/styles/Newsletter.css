@@ -1,0 +1,185 @@
+.newsletter-section {
+  padding: 6rem 0;
+  background-color: var(--vibrant-orange);
+  color: rgb(255, 0, 0);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.newsletter-container {
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  padding: 0 2rem;
+}
+
+.newsletter-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.newsletter-title {
+  font-family: var(--font-headline);
+  font-size: 1.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .newsletter-title {
+    font-size: 3rem;
+  }
+}
+
+.newsletter-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .newsletter-form {
+    flex-direction: row;
+  }
+}
+
+.newsletter-input {
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-family: var(--font-body);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.newsletter-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletter-input:focus {
+  border-color: white;
+  box-shadow: 0 0 0 2px white;
+}
+
+.newsletter-btn {
+  background-color: #2d2f2f;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 1.125rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.newsletter-btn:hover {
+  background-color: black;
+}
+
+.newsletter-btn:active {
+  transform: scale(0.95);
+}
+
+/* Dragon Ball Ornaments */
+.dragonball {
+  position: absolute;
+  background: radial-gradient(circle at 30% 30%, #ffc000, #ff8c00 70%);
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 10px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.db-star {
+  color: #e53e3e;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.db-star.small {
+  font-size: 0.5rem;
+}
+
+.db-1 {
+  width: 6rem;
+  height: 6rem;
+  top: -1rem;
+  left: -2rem;
+  opacity: 0.4;
+  transform: rotate(12deg);
+}
+
+.db-2 {
+  width: 4rem;
+  height: 4rem;
+  top: 3rem;
+  right: 3rem;
+  opacity: 0.3;
+  transform: rotate(-12deg);
+}
+
+.db-3 {
+  width: 8rem;
+  height: 8rem;
+  bottom: -3rem;
+  left: 25%;
+  opacity: 0.2;
+}
+
+.db-small {
+  width: 2rem;
+  height: 2rem;
+  position: relative;
+  box-shadow: none;
+}
+
+.db-stars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.125rem;
+}
+
+.db-stars-grid .db-star {
+  font-size: 0.75rem;
+}
+
+.db-stars-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.db-stars-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.db-stars-row .db-star {
+  font-size: 0.75rem;
+}

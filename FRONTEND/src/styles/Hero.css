@@ -1,0 +1,289 @@
+.hero-container {
+  position: relative;
+  height: calc(100vh - 80px);
+  min-height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 80px;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 64rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  width: auto;
+  height: 180px;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 4.5rem;
+  }
+}
+
+.search-bar-container {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.search-bar {
+  background-color: var(--surface-container-lowest, #ffffff);
+  border-radius: 0.75rem;
+  box-shadow: 0px 20px 40px rgba(45, 47, 47, 0.08);
+}
+
+@media (min-width: 768px) {
+  .search-bar {
+    padding: 2rem;
+  }
+}
+
+.trip-types {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.trip-type-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.radio-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--primary);
+}
+
+.radio-text {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--on-surface);
+  transition: color 0.2s;
+}
+
+.trip-type-label:hover .radio-text {
+  color: var(--primary);
+}
+
+.search-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid rgba(172, 173, 173, 0.2);
+  border-radius: 0.75rem;
+  /* overflow: hidden;  <-- REMOVED to allow dropdown visibility */
+}
+
+@media (min-width: 768px) {
+  .search-fields {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Applying border radius manually to corners since we removed overflow:hidden */
+  .search-field:first-child {
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
+  }
+  
+  .search-field:last-child {
+    border-top-right-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-field:first-child {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+  
+  .search-field:last-child {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    border-bottom: none;
+  }
+}
+
+.search-field {
+  padding: 1rem;
+  background-color: rgba(240, 241, 241, 0.5);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(172, 173, 173, 0.1);
+  transition: background-color 0.2s;
+  position: relative; /* For dropdown positioning */
+}
+
+/* Dropdown styles */
+.city-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid rgba(172, 173, 173, 0.2);
+  border-radius: 0 0 0.75rem 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.city-dropdown li {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-headline);
+  font-weight: 600;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.city-dropdown li:hover {
+  background-color: #f0f1f1;
+  color: var(--primary);
+}
+
+.city-dropdown li.no-results {
+  color: var(--outline);
+  font-style: italic;
+  cursor: default;
+}
+
+.city-dropdown li.no-results:hover {
+  background-color: transparent;
+}
+
+/* DatePicker custom styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 100%;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--on-surface);
+  outline: none;
+}
+
+.react-datepicker__input-container input::placeholder {
+  color: var(--outline-variant);
+}
+
+.search-field:hover {
+  background-color: rgba(240, 241, 241, 1);
+}
+
+.search-field.no-border {
+  border-right: none;
+}
+
+.field-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.field-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-primary {
+  color: var(--primary);
+}
+
+.field-input {
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 100%;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  color: var(--on-surface);
+  outline: none;
+}
+
+.field-input::placeholder {
+  color: var(--outline-variant);
+}
+
+.search-cta {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-search {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  padding: 1rem 3rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-search:hover {
+  background-color: var(--primary-dim);
+}
+
+.btn-search:active {
+  transform: scale(0.95);
+}

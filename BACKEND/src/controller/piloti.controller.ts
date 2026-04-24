@@ -24,7 +24,7 @@ export const pilotiGETById = async (req: Request, res: Response) => {
 
 export const pilotiPOST = async (req: Request, res: Response) => {
     try {
-        const { rows } = await pool.query<Piloti>("INSERT INTO piloti (nome, cognome) VALUES ($1, $2) RETURNING *", [req.body.nome, req.body.cognome]);
+        const { rows } = await pool.query<Piloti>("INSERT INTO piloti (name, surname) VALUES ($1, $2) RETURNING *", [req.body.nome, req.body.cognome]);
         return res.json({ count: rows.length, data: rows });
     } catch (error) {
         console.error(error);
@@ -34,7 +34,7 @@ export const pilotiPOST = async (req: Request, res: Response) => {
 
 export const pilotiUPDATE = async (req: Request, res: Response) => {
     try {
-        const { rows } = await pool.query<Piloti>("UPDATE piloti SET nome = $1, cognome = $2 WHERE id = $3 RETURNING *", [req.body.nome, req.body.cognome, req.params.id]);
+        const { rows } = await pool.query<Piloti>("UPDATE piloti SET name = $1, surname = $2 WHERE id = $3 RETURNING *", [req.body.nome, req.body.cognome, req.params.id]);
         return res.json({ count: rows.length, data: rows });
     } catch (error) {
         console.error(error);

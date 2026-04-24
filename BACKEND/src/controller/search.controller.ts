@@ -46,7 +46,7 @@ export function trattaGet (req: Request, res: Response) {
 
 export function trattaPost (req: Request, res: Response) {
     try {
-        const rows = pool.query("INSERT INTO tratte (codice_IATA, codice_IATA, data_partenza, prezzo) VALUES ($1, $2, $3, $4)", [req.body.origin, req.body.destination, req.body.date, req.body.price]);
+        const rows = pool.query("INSERT INTO tratte (aereporto_partenza, aereporto_arrivo, data_partenza, prezzo) VALUES ($1, $2, $3, $4)", [req.body.origin, req.body.destination, req.body.date, req.body.price]);
         return res.json(rows);
     } catch (error) {
         console.error(error);

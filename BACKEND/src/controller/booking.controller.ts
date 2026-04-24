@@ -5,7 +5,7 @@ import { Ticket } from "@/types/ticket.type";
 
 export function bookingGET(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM prenotazioni");
+        const rows = pool.query("SELECT * FROM prenotazione");
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -15,7 +15,7 @@ export function bookingGET(req: Request, res: Response) {
 
 export function bookingGETbyId(req: Request, res: Response) {
     try {
-        const rows = pool.query("SELECT * FROM prenotazioni WHERE id = $1 JOIN bilietti ON prenotazioni.id = billetti.id_prenotazione", [req.params.id]);
+        const rows = pool.query("SELECT * FROM prenotazione WHERE id = $1 JOIN biglietto ON prenotazione.id = biglietto.id_prenotazione", [req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -25,7 +25,7 @@ export function bookingGETbyId(req: Request, res: Response) {
 
 export function bookingPOST(req: Request, res: Response) {
     try {
-        const rows = pool.query("INSERT INTO prenotazioni (id_utente) VALUES ($1)", [req.body.id_utente, req.body.id_volo]);
+        const rows = pool.query("INSERT INTO prenotazione (id_utente) VALUES ($1)", [req.body.id_utente, req.body.id_volo]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -35,7 +35,7 @@ export function bookingPOST(req: Request, res: Response) {
 
 export function bookingDELETE(req: Request, res: Response) {
     try {
-        const rows = pool.query("DELETE FROM prenotazioni WHERE id = $1", [req.params.id]);
+        const rows = pool.query("DELETE FROM prenotazione WHERE id = $1", [req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -45,7 +45,7 @@ export function bookingDELETE(req: Request, res: Response) {
 
 export function bookingUPDATE(req: Request, res: Response) {
     try {
-        const rows = pool.query("UPDATE prenotazioni SET id_utente = $1 WHERE id = $2", [req.body.id_utente, req.params.id]);
+        const rows = pool.query("UPDATE prenotazione SET id_utente = $1 WHERE id = $2", [req.body.id_utente, req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);

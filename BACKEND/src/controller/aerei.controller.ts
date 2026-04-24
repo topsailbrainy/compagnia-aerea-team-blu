@@ -24,7 +24,7 @@ export function aereiGetById(req: Request, res: Response) {
 
 export function aereiPost(req: Request, res: Response) {
     try {
-        const rows = pool.query("INSERT INTO aerei (codice, modello, capienza) VALUES ($1, $2, $3)", [req.body.codice, req.body.modello, req.body.capienza]);
+        const rows = pool.query("INSERT INTO aerei (modello, capienza) VALUES ($1, $2)", [req.body.modello, req.body.capienza]);
         return res.json(rows);
     } catch (error) {
         console.error(error);
@@ -34,7 +34,7 @@ export function aereiPost(req: Request, res: Response) {
 
 export function aereiUpdate(req: Request, res: Response) {
     try {
-        const rows = pool.query("UPDATE aerei SET codice = $1, modello = $2, capienza = $3 WHERE id = $4", [req.body.codice, req.body.modello, req.body.capienza, req.params.id]);
+        const rows = pool.query("UPDATE aerei SET modello = $1, capienza = $2 WHERE id = $3", [req.body.modello, req.body.capienza, req.params.id]);
         return res.json(rows);
     } catch (error) {
         console.error(error);

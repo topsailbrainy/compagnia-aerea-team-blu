@@ -1,0 +1,251 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1rem 1rem;
+  background-color: var(--background);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 75rem;
+  display: grid;
+  background-color: var(--surface-container-lowest);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(45, 47, 47, 0.06);
+  min-height: 50rem;
+}
+
+@media (min-width: 768px) {
+  .login-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.login-image-section {
+  position: relative;
+  overflow: hidden;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .login-image-section {
+    display: block;
+  }
+}
+
+.login-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(129, 55, 177, 0.8), transparent, transparent);
+}
+
+.login-image-text {
+  position: absolute;
+  bottom: 4rem;
+  left: 3rem;
+  right: 3rem;
+  text-align: center;
+  color: var(--on-primary);
+}
+
+.login-image-title {
+  font-family: var(--font-headline);
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+}
+
+.login-image-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin: 0 auto;
+  max-width: 16rem;
+}
+
+.login-form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--surface-container-lowest);
+}
+
+@media (min-width: 768px) {
+  .login-form-section {
+    padding: 3rem 5rem;
+  }
+}
+
+.login-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.login-title {
+  font-family: var(--font-headline);
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--on-background);
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  color: var(--on-surface-variant);
+  font-weight: 500;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.login-form-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-field {
+  width: 100%;
+}
+
+.login-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.login-input {
+  width: 100%;
+  background-color: var(--surface-container-low);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: var(--on-surface);
+  outline: none;
+  transition: box-shadow 0.2s;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.login-input:focus {
+  box-shadow: 0 0 0 2px var(--secondary-container);
+}
+
+.login-input::placeholder {
+  color: var(--outline);
+}
+
+.login-forgot {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.login-forgot-link {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.login-forgot-link:hover {
+  text-decoration: none;
+}
+
+.login-submit-btn {
+  padding-top: 0.5rem;
+  width: 100%;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--on-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(129, 55, 177, 0.2);
+  transition: transform 0.3s;
+}
+
+.login-btn:hover {
+  transform: scale(0.98);
+}
+
+.login-btn:active {
+  transform: scale(0.95);
+}
+
+.login-signup {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.login-signup-text {
+  color: var(--on-surface-variant);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.login-signup-btn {
+  background: none;
+  border: none;
+  color: var(--secondary);
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.login-signup-btn:hover {
+  text-decoration: none;
+}
+
+.login-footer-links {
+  margin-top: auto;
+  padding-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.login-footer-link {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  text-decoration: none;
+}
+
+.login-footer-link:hover {
+  color: var(--primary);
+}

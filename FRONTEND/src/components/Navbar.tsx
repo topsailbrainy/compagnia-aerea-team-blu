@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
+import Timer from './Timer';
 import '../styles/Navbar.css';
+import { useStoreTimer } from '../stores/storeTimer';
+import { useStoreUser } from '../stores/storeUser';
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [lang, setLang] = useState<'IT' | 'EN'>('IT');
+  const { getTimer } = useStoreTimer();
+  const { logged, setLogged } = useStoreUser();
 
   return (
     <nav className="navbar-container">
       <div className="navbar-content">
-        <div className="navbar-logo">
-          Ghoan Airlines
-        </div>
-        
-        <div className="navbar-links">
-          <a href="#" className="navbar-link active">Voli</a>
-          <a href="#" className="navbar-link">Destinazioni</a>
-          <a href="#" className="navbar-link">Offerte</a>
+        <div
+          className="navbar-logo"
+          onClick={() => navigate('/')}
+        >
+          <img src="../../img/gatto113.png" alt="Logo" />
         </div>
 
         <div className="navbar-actions">
@@ -34,22 +38,66 @@ const Navbar: React.FC = () => {
             </span>
           </div>
 
-          <div className="cart-timer">
-            <div className="cart-icon-wrapper">
-              <span className="material-symbols-outlined text-primary">shopping_cart</span>
+          {getTimer() > 0 && <>
+            <div className="cart-timer">
+              <div className="cart-icon-wrapper">
+                <span className="material-symbols-outlined text-primary">shopping_cart</span>
+              </div>
+              <div className="timer-info">
+                <span className="timer-label">Tempo rimasto</span>
+                <span className="timer-value">
+                  <Timer />
+                </span>
+              </div>
             </div>
-            <div className="timer-info">
-              <span className="timer-label">Tempo rimasto</span>
-              <span className="timer-value">20:00</span>
-            </div>
-          </div>
-          
-          <button className="btn-signin">
-            <span className="material-symbols-outlined">person</span>
-            <span>Accedi</span>
-          </button>
-          
-          <button className="btn-signup">Registrati</button>
+          </>
+          }
+
+          {logged ? (
+            <>
+              <button
+                className="btn-signin"
+                onClick={() => navigate('/profile')}
+              >
+                <span className="material-symbols-outlined">person</span>
+                <span>Profilo</span>
+              </button>
+              
+              <button
+                className="btn-signup"
+                onClick={() => navigate('/upgrade')}
+              >
+                Upgrade
+              </button>
+
+              <button
+                className="btn-signin"
+                onClick={() => {
+                  setLogged(false);
+                  navigate('/');
+                }}
+              >
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn-signin"
+                onClick={() => navigate('/login')}
+              >
+                <span className="material-symbols-outlined">person</span>
+                <span>Accedi</span>
+              </button>
+              
+              <button
+                className="btn-signup"
+                onClick={() => navigate('/register')}
+              >
+                Registrati
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

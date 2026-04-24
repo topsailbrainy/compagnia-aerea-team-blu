@@ -64,7 +64,7 @@ const Hero: React.FC = () => {
     <section className="hero-container">
       <div className="hero-background">
         <img 
-          src="https://lh3.googleusercontent.com/aida/ADBb0ujL78TpcU7958C3fsOGp106hET3AQUgX7HlU_rc-8pwZm0x0ny0KBRETeGfuEk56_pPQyRlhERNycujBfBCfF8bSLgwCW_hYe-bUcrN4lFnrpCd_ijcb6H86hJJL1ERTE8xi85j8K5iQazmOaO2eZwszk3PJAqFfFryuO0qYhGzUf-JdEgytJ1fnIzbU-BNucN9mf02RphCTFTl7ViLoj4TxHMnlPXX_JOkmfJN8TKbtxO0yAyJI9U1nZnhPG9XbPhJ2hEX4vIYrJw" 
+          src="../../img/gatto.png"
           alt="Ghoan Airlines Hero" 
           className="hero-img"
         />
@@ -72,7 +72,11 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="hero-content">
-        <h1 className="hero-title">Ghoan Airlines</h1>
+        <img 
+          src="../../img/gatto113.png"
+          alt="Ghoan Airlines Hero" 
+          className="hero-title"
+        />
       </div>
 
       <div className="search-bar-container">

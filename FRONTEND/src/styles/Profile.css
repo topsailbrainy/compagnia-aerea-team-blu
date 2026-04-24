@@ -1,0 +1,583 @@
+.profile-page {
+  min-height: 100vh;
+  padding: 6rem 2rem 3rem;
+  background-color: var(--background);
+}
+
+.profile-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: 3fr 9fr;
+  }
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-dashboard-card {
+  background-color: var(--surface-container);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-dashboard-title {
+  font-size: 0.6875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  margin-bottom: 1rem;
+}
+
+.profile-dashboard-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.profile-dashboard-btn.active {
+  background-color: var(--surface-container-lowest);
+  color: var(--primary);
+  box-shadow: 0 10px 15px rgba(45, 47, 47, 0.06);
+}
+
+.profile-dashboard-btn.inactive {
+  color: var(--on-surface-variant);
+}
+
+.profile-dashboard-btn.inactive:hover {
+  background-color: var(--surface-container-high);
+}
+
+.profile-status-card {
+  background: linear-gradient(135deg, rgba(204, 128, 253, 0.2), rgba(204, 128, 253, 0.05));
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-status-title {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.profile-status-desc {
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.profile-status-icon {
+  position: absolute;
+  right: -1rem;
+  bottom: -1rem;
+  color: var(--primary);
+  opacity: 0.1;
+  font-size: 6rem;
+  transform: rotate(12deg);
+  transition: transform 0.5s;
+}
+
+.profile-status-card:hover .profile-status-icon {
+  transform: rotate(0deg);
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.profile-section {
+  margin-bottom: 3rem;
+}
+
+.profile-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.profile-section-title {
+  font-family: var(--font-headline);
+  font-size: 2.25rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: var(--on-background);
+}
+
+.profile-section-subtitle {
+  color: var(--outline);
+  font-weight: 500;
+}
+
+.profile-tickets-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-ticket-card {
+  background-color: var(--surface-container-lowest);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 40px rgba(45, 47, 47, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .profile-ticket-card {
+    flex-direction: row;
+  }
+}
+
+.profile-ticket-indicator {
+  width: 0.5rem;
+  background-color: var(--primary);
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.profile-ticket-main {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+.profile-ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.profile-ticket-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-ticket-badge-icon {
+  background-color: rgba(129, 55, 177, 0.15);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--primary);
+}
+
+.profile-ticket-badge-text {
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+}
+
+.profile-ticket-status {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.profile-ticket-route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-ticket-airport {
+  text-align: left;
+}
+
+.profile-ticket-airport-code {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--on-background);
+}
+
+@media (min-width: 768px) {
+  .profile-ticket-airport-code {
+    font-size: 2.25rem;
+  }
+}
+
+.profile-ticket-airport-city {
+  font-size: 0.875rem;
+  color: var(--outline);
+}
+
+.profile-ticket-time {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.profile-ticket-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding: 0 2rem;
+  opacity: 0.4;
+  position: relative;
+}
+
+.profile-ticket-line-divider {
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-ticket-line-divider .material-symbols-outlined {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--surface-container-lowest);
+  padding: 0.25rem;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.profile-ticket-line-duration {
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1rem;
+}
+
+.profile-ticket-secondary {
+  background-color: var(--surface-container) !important;
+  opacity: 0.8;
+}
+
+.profile-ticket-secondary .profile-ticket-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-ticket-secondary:hover {
+  opacity: 1;
+}
+
+.profile-ticket-divider {
+  height: 2rem;
+  width: 1px;
+  background-color: var(--outline-variant);
+}
+
+.profile-ticket-date {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.profile-ticket-date p:last-child {
+  font-size: 0.75rem;
+  color: var(--outline);
+  font-weight: 400;
+}
+
+.profile-ticket-actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.profile-secondary-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-ticket-actions button {
+  color: var(--on-surface-variant);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-ticket-actions button:last-child {
+  background-color: var(--surface-container-lowest);
+  color: var(--primary);
+}
+
+.profile-ticket-actions button:hover {
+  background-color: var(--surface-container-high);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}
+
+.add-icon {
+  font-size: 1.25rem;
+}
+
+.profile-ticket-details {
+  background-color: var(--surface-container-low);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-left: 2px dashed var(--outline-variant);
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .profile-ticket-details {
+    width: 16rem;
+  }
+}
+
+.profile-ticket-qr {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.5rem;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+  .profile-ticket-qr {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+.profile-ticket-qr-btn {
+  color: var(--primary);
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-ticket-qr-btn:hover {
+  text-decoration: underline;
+}
+
+.profile-documents-card {
+  background-color: var(--surface-container-lowest);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(45, 47, 47, 0.06);
+  padding: 3rem;
+  padding-top: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-security-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--on-surface);
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.profile-security-icon {
+  font-size: 0.875rem;
+  color: #22c55e;
+}
+
+.profile-security-text {
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.profile-documents-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .profile-documents-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.profile-field.full-width {
+  grid-column: span 2;
+}
+
+.profile-label {
+  font-size: 0.625rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  margin-left: 0.25rem;
+}
+
+.profile-input-wrapper {
+  border-bottom: 2px solid var(--surface-container-high);
+  padding: 0.75rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  group: ;
+}
+
+.profile-input-wrapper:hover {
+  border-color: var(--outline);
+}
+
+.profile-value {
+  color: var(--on-background);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.profile-passport-card {
+  background-color: var(--surface-container-low);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.profile-passport-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-passport-icon {
+  background-color: var(--surface-container-highest);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--on-surface-variant);
+}
+
+.profile-passport-details-title {
+  font-weight: 700;
+  color: var(--on-background);
+}
+
+.profile-passport-details-number {
+  font-size: 0.75rem;
+  color: var(--outline);
+}
+
+.profile-replace-btn {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid rgba(129, 55, 177, 0.2);
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profile-replace-btn:hover {
+  background-color: rgba(129, 55, 177, 0.05);
+}
+
+.profile-save-footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--surface-container);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-save-footer-text {
+  font-size: 0.75rem;
+  color: var(--outline);
+  max-width: 16rem;
+}
+
+.profile-save-btn {
+  background-color: var(--on-background);
+  color: var(--surface);
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.profile-save-btn:active {
+  transform: scale(0.95);
+}

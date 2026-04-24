@@ -4,6 +4,10 @@ interface Flight {
   id: string;
   type: 'outbound' | 'inbound';
   price: number;
+  fromCity: string;
+  toCity: string;
+  orario: string;
+  data: Date
 }
 
 interface TariffaState {

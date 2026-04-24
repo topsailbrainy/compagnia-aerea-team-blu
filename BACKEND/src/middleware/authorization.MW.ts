@@ -3,15 +3,15 @@ import * as jose from 'jose';
 import NodeCache from 'node-cache';
 
 declare global {
-     namespace Express {
-         interface Request {
-             user?: {
+    namespace Express {
+        interface Request {
+            user?: {
                 id: string;
                 email?: string;
                 admin: boolean;
             }
-         }
-     }
+        }
+    }
 }
 
 const cache = new NodeCache({ stdTTL: 600, checkperiod: 60 });

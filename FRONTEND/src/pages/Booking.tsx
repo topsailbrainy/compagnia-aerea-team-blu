@@ -9,11 +9,10 @@ const Booking: React.FC = () => {
 
   const formatDate = (date: Date | null) => {
     if (!date) return '';
-    return date.toLocaleDateString('it-IT', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    });
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -62,7 +61,7 @@ const Booking: React.FC = () => {
                   isDirect={true}
                   type="outbound"
                   isSelected={outboundFlight?.id === 'out-1'}
-                  onSelect={() => toggleFlight({ id: 'out-1', type: 'outbound', price: 729 })}
+                  onSelect={() => toggleFlight({ id: 'out-1', fromCity, toCity, type: 'outbound', price: 729, orario: '09:15', data: departureDate! })}
                 />
                 <FlightCard 
                   id="out-2"
@@ -76,7 +75,7 @@ const Booking: React.FC = () => {
                   isDirect={false}
                   type="outbound"
                   isSelected={outboundFlight?.id === 'out-2'}
-                  onSelect={() => toggleFlight({ id: 'out-2', type: 'outbound', price: 580 })}
+                  onSelect={() => toggleFlight({ id: 'out-2', fromCity, toCity, type: 'outbound', price: 580, orario: '14:40', data: departureDate! })}
                 />
               </div>
             </div>
@@ -106,7 +105,7 @@ const Booking: React.FC = () => {
                     isDirect={true}
                     type="inbound"
                     isSelected={inboundFlight?.id === 'in-1'}
-                    onSelect={() => toggleFlight({ id: 'in-1', type: 'inbound', price: 729 })}
+                    onSelect={() => toggleFlight({ id: 'in-1', fromCity: toCity, toCity: fromCity, type: 'inbound', price: 729, orario: '11:20', data: returnDate! })}
                   />
                 </div>
               </div>

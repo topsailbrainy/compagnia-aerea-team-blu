@@ -4,6 +4,7 @@ import { useStoreTariffa } from '../stores/storeTariffa';
 import { useStoreTimer } from '../stores/storeTimer';
 
 const PaymentSummary: React.FC = () => {
+  const days = ["Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato","Domenica"]
   const navigate = useNavigate();
   const { outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
   const { setTimer } = useStoreTimer();
@@ -33,8 +34,8 @@ const PaymentSummary: React.FC = () => {
             <div className="summary-item">
               <div>
                 <p className="item-label-small">Volo di Andata</p>
-                <p className="item-name">Tokyo → Parigi</p>
-                <p className="item-details">24 Maggio 2024 • 12:45</p>
+                <p className="item-name">{outboundFlight.fromCity + "→" + outboundFlight.toCity}</p>
+                <p className="item-details">{days[outboundFlight.data.getDay()]+", "+outboundFlight.data.getDate()+"/"+outboundFlight.data.getMonth()+"/"+outboundFlight.data.getFullYear() + " • " + outboundFlight.orario}</p>
               </div>
               <div className="text-right">
                 <p className="item-price">{formatCurrency(outboundFlight.price)}</p>
@@ -46,8 +47,8 @@ const PaymentSummary: React.FC = () => {
             <div className="summary-item">
               <div>
                 <p className="item-label-small">Volo di Ritorno</p>
-                <p className="item-name">Parigi → Tokyo</p>
-                <p className="item-details">31 Maggio 2024 • 10:20</p>
+                <p className="item-name">{inboundFlight.fromCity + "→" + inboundFlight.toCity}</p>
+                <p className="item-details">{days[inboundFlight.data.getDay()]+", "+inboundFlight.data.getDate()+"/"+inboundFlight.data.getMonth()+"/"+inboundFlight.data.getFullYear() + " • " + inboundFlight.orario}</p>
               </div>
               <div className="text-right">
                 <p className="item-price">{formatCurrency(inboundFlight.price)}</p>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useStoreUser } from '../stores/storeUser';
 import '../styles/Login.css';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { setLogged } = useStoreUser();
 
   return (
     <div className="login-page">
@@ -29,7 +31,7 @@ const Login: React.FC = () => {
             <h1 className="login-title">Bentornato</h1>
             <p className="login-subtitle">Inserisci i tuoi dati per accedere al tuo account.</p>
           </div>
-          <form className="login-form">
+          <form className="login-form" onSubmit={(e) => { e.preventDefault(); setLogged(true); navigate('/'); }}>
             <div className="login-form-fields">
               <div className="login-field">
                 <label className="login-label">Email / Username</label>

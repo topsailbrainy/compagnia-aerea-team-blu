@@ -24,7 +24,7 @@ const NewsSection: React.FC = () => {
           <div className="news-card">
             <div className="card-overlay"></div>
             <img 
-              src="https://lh3.googleusercontent.com/aida/ADBb0ugm2X5w-HWFbTlx9AZo5eth6Dkmy7gaOX02_RTSftaMe1XKE1oTTUqpZxjiYsJl7MhO3F6_7-E-8jR9Me2GAmzPBwMB9ycMIg_N_1t78UpwfCknt4TjdIHFsVzId_tlUTSAtqmjhQp2qsBqsDtUf5qWcwP8eLlCO_J79gC4lQIaVTBzlr9OMgyr4dOELpD0q2vvp5_WKvxvkvQV2sZFEgg6DtGFsUG1CRptbfEKsDQP6BR0IgfDl_JOl-DAm6BPVqhrsEBWwgmIlQ" 
+              src="../../img/gatto8.png"
               alt="Mafia News" 
               className="card-img"
             />

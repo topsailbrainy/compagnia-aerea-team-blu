@@ -8,6 +8,8 @@ import Payment from './pages/Payment';
 import BookingConfirmed from './pages/BookingConfirmed';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
+import Upgrade from './pages/Upgrade';
 import './App.css';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
           <Route path="/booking-confirmed" element={<BookingConfirmed />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/upgrade" element={<Upgrade />} />
         </Routes>
       </main>
       <Footer />

@@ -1,6 +1,6 @@
 .hero-container {
   position: relative;
-  height: calc(100vh - 80px); /* Fill the rest of the viewport */
+  height: calc(100vh - 80px);
   min-height: 600px;
   width: 100%;
   display: flex;
@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-top: 80px; /* To account for fixed navbar */
+  margin-top: 80px;
 }
 
 .hero-background {
@@ -36,18 +36,15 @@
   width: 100%;
   max-width: 64rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
   margin-bottom: 2rem;
 }
 
 .hero-title {
-  font-family: var(--font-headline);
-  font-size: 3rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.05em;
+  width: auto;
+  height: 180px;
   text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  text-transform: uppercase;
 }
 
 @media (min-width: 768px) {
@@ -61,13 +58,15 @@
   z-index: 20;
   width: 100%;
   max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .search-bar {
   background-color: var(--surface-container-lowest, #ffffff);
   border-radius: 0.75rem;
   box-shadow: 0px 20px 40px rgba(45, 47, 47, 0.08);
-  padding: 1.5rem;
 }
 
 @media (min-width: 768px) {

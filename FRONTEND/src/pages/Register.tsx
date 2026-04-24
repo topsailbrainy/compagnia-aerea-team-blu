@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useStoreUser } from '../stores/storeUser';
 import '../styles/Register.css';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const { setLogged } = useStoreUser();
 
   return (
     <div className="register-page">
@@ -18,7 +20,7 @@ const Register: React.FC = () => {
 
         <div className="register-card">
           <div className="register-bg-accent"></div>
-          <form className="register-form">
+          <form className="register-form" onSubmit={(e) => { e.preventDefault(); setLogged(true); navigate('/'); }}>
             <div className="register-field">
               <label className="register-label">Full Name</label>
               <div className="register-input-wrapper">

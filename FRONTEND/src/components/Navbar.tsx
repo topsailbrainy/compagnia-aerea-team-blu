@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router';
 import Timer from './Timer';
 import '../styles/Navbar.css';
 import { useStoreTimer } from '../stores/storeTimer';
+import { useStoreUser } from '../stores/storeUser';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [lang, setLang] = useState<'IT' | 'EN'>('IT');
   const { getTimer } = useStoreTimer();
+  const { logged, setLogged } = useStoreUser();
 
   return (
     <nav className="navbar-container">
@@ -16,7 +18,7 @@ const Navbar: React.FC = () => {
           className="navbar-logo"
           onClick={() => navigate('/')}
         >
-          Ghoan Airlines
+          <img src="../../img/gatto113.png" alt="Logo" />
         </div>
 
         <div className="navbar-actions">
@@ -51,20 +53,51 @@ const Navbar: React.FC = () => {
           </>
           }
 
-          <button
-            className="btn-signin"
-            onClick={() => navigate('/login')}
-          >
-            <span className="material-symbols-outlined">person</span>
-            <span>Accedi</span>
-          </button>
-          
-          <button
-            className="btn-signup"
-            onClick={() => navigate('/register')}
-          >
-            Registrati
-          </button>
+          {logged ? (
+            <>
+              <button
+                className="btn-signin"
+                onClick={() => navigate('/profile')}
+              >
+                <span className="material-symbols-outlined">person</span>
+                <span>Profilo</span>
+              </button>
+              
+              <button
+                className="btn-signup"
+                onClick={() => navigate('/upgrade')}
+              >
+                Upgrade
+              </button>
+
+              <button
+                className="btn-signin"
+                onClick={() => {
+                  setLogged(false);
+                  navigate('/');
+                }}
+              >
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn-signin"
+                onClick={() => navigate('/login')}
+              >
+                <span className="material-symbols-outlined">person</span>
+                <span>Accedi</span>
+              </button>
+              
+              <button
+                className="btn-signup"
+                onClick={() => navigate('/register')}
+              >
+                Registrati
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

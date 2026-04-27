@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import '../styles/Profile.css';
 
+
 const Profile: React.FC = () => {
+   const ticketsRef = useRef<HTMLDivElement>(null);
+   const profileRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="profile-page">
       <div className="profile-container">
@@ -11,12 +15,16 @@ const Profile: React.FC = () => {
             <div className="profile-dashboard-card">
               <h2 className="profile-dashboard-title">Account Dashboard</h2>
               
-              <button className="profile-dashboard-btn active">
+              <button className="profile-dashboard-btn active"
+              onClick={() => ticketsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+              >
                 <span className="material-symbols-outlined">confirmation_number</span>
                 <span>My Tickets</span>
               </button>
               
-              <button className="profile-dashboard-btn inactive">
+              <button className="profile-dashboard-btn inactive"
+               onClick={() => profileRef.current?.scrollIntoView({ behavior: 'smooth' })}
+               >
                 <span className="material-symbols-outlined">person</span>
                 <span>My Profile</span>
               </button>
@@ -42,7 +50,7 @@ const Profile: React.FC = () => {
           {/* Right Content */}
           <div className="profile-content">
             {/* My Tickets Section */}
-            <section className="profile-section">
+            <section ref={ticketsRef} className="profile-section">
               <div className="profile-section-header">
                 <div>
                   <h1 className="profile-section-title">Upcoming Journeys</h1>
@@ -126,7 +134,7 @@ const Profile: React.FC = () => {
             </section>
 
             {/* My Profile Section */}
-            <section className="profile-section">
+            <section ref={profileRef} className="profile-section">
               <div className="profile-section-header">
                 <div>
                   <h2 className="profile-section-title">Identity &amp; Documents</h2>

@@ -10,6 +10,7 @@ const cities = ["Roma", "Milano", "Parigi", "Londra", "New York"];
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const setSearchData = useStoreTariffa(state => state.setSearchCriteria);
+  const reset = useStoreTariffa(state => state.reset);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
@@ -21,11 +22,7 @@ const Hero: React.FC = () => {
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!isRoundTrip) {
-      setReturnDate(null);
-    }
-  }, [isRoundTrip]);
+ 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,6 +52,8 @@ const Hero: React.FC = () => {
     const isDateValid = isRoundTrip ? (departureDate && returnDate) : departureDate;
 
     if (fromCity && toCity && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
+      reset();
+      
       setSearchData({ fromCity, toCity, departureDate, returnDate, isRoundTrip})
       navigate('/booking');
     }
@@ -64,7 +63,7 @@ const Hero: React.FC = () => {
     <section className="hero-container">
       <div className="hero-background">
         <img 
-          src="../../img/gatto.png"
+          src="../../img/gatto.png" 
           alt="Ghoan Airlines Hero" 
           className="hero-img"
         />
@@ -72,11 +71,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="hero-content">
-        <img 
-          src="../../img/gatto113.png"
-          alt="Ghoan Airlines Hero" 
-          className="hero-title"
-        />
+        <h1 className="hero-title">Ghoan Airlines</h1>
       </div>
 
       <div className="search-bar-container">
@@ -97,7 +92,10 @@ const Hero: React.FC = () => {
                 type="radio" 
                 name="trip-type" 
                 checked={!isRoundTrip}
-                onChange={() => setIsRoundTrip(false)}
+                onChange={() =>{
+                  setIsRoundTrip(false);
+                  setReturnDate(null);
+                }}
                 className="radio-input" 
               />
               <span className="radio-text">Sola Andata</span>
@@ -179,7 +177,7 @@ const Hero: React.FC = () => {
                 <span className="material-symbols-outlined icon-primary">calendar_month</span>
                 <DatePicker
                   selected={departureDate}
-                  onChange={(date) => setDepartureDate(date)}
+                  onChange={(date: Date | null) => setDepartureDate(date)}
                   placeholderText="Aggiungi data"
                   className="field-input"
                   dateFormat="dd/MM/yyyy"
@@ -194,7 +192,7 @@ const Hero: React.FC = () => {
                 <span className="material-symbols-outlined icon-primary">calendar_month</span>
                 <DatePicker
                   selected={returnDate}
-                  onChange={(date) => setReturnDate(date)}
+                  onChange={(date: Date | null) => setReturnDate(date)}
                   placeholderText={isRoundTrip ? "Aggiungi data" : "Sola andata"}
                   className="field-input"
                   dateFormat="dd/MM/yyyy"

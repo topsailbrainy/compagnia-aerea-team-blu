@@ -1,9 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useStoreTariffa } from '../stores/storeTariffa';
 import '../styles/BookingConfirmed.css';
+
 
 const BookingConfirmed: React.FC = () => {
   const navigate = useNavigate();
+  const { reset } = useStoreTariffa();
+  const { passegero, outboundFlight} = useStoreTariffa();
 
   return (
     <div className="booking-confirmed-page">
@@ -42,11 +46,11 @@ const BookingConfirmed: React.FC = () => {
               <div className="booking-confirmed-details">
                 <div>
                   <p className="booking-confirmed-detail-label">Name</p>
-                  <p className="booking-confirmed-detail-value">Alessandro</p>
+                  <p className="booking-confirmed-detail-value">{passegero?.nome}</p>
                 </div>
                 <div>
                   <p className="booking-confirmed-detail-label">Surname</p>
-                  <p className="booking-confirmed-detail-value">Rossi</p>
+                  <p className="booking-confirmed-detail-value">{passegero?.cognome}</p>
                 </div>
                 <div className="booking-confirmed-detail-value full-width">
                   <p className="booking-confirmed-detail-label">Tax Code</p>
@@ -55,12 +59,12 @@ const BookingConfirmed: React.FC = () => {
                 <div>
                   <p className="booking-confirmed-detail-label">GATE</p>
                   <div>
-                    <span className="booking-confirmed-gate-badge">B24</span>
+                    <span className="booking-confirmed-gate-badge"> B{outboundFlight?.id?.slice(0, 2)}</span>
                   </div>
                 </div>
                 <div>
                   <p className="booking-confirmed-detail-label">FLIGHT</p>
-                  <p className="booking-confirmed-flight-number">GH-2024</p>
+                  <p className="booking-confirmed-flight-number">GH-{outboundFlight?.id}</p>
                 </div>
               </div>
 
@@ -108,7 +112,10 @@ const BookingConfirmed: React.FC = () => {
             </button>
             <button
               className="booking-confirmed-btn booking-confirmed-btn-secondary"
-              onClick={() => navigate('/')}
+               onClick={() => {
+                              reset();
+                                navigate('/');
+                                               }}
             >
               <span className="material-symbols-outlined">home</span>
               Torna alla Home

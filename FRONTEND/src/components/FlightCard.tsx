@@ -31,7 +31,8 @@ const FlightCard: React.FC<FlightCardProps> = ({
   onSelect
 }) => {
   return (
-    <div className={`flight-card group ${type} ${isSelected ? 'selected' : ''}`}>
+    <div className={`flight-card group ${type} ${isSelected ? 'selected' : ''}`}
+       data-flight-id={id}>
       <div className="flight-card-main">
         <div className="flight-info-grid">
           <div className="time-block">
@@ -63,10 +64,10 @@ const FlightCard: React.FC<FlightCardProps> = ({
 
         <div className="price-selection">
           <p className="price-label">Da</p>
-          <p className="price-value">${price}</p>
+          <p className="price-value">€{price}</p>
           <button 
             className={`btn-select ${isSelected ? 'btn-selected' : ''}`}
-            onClick={onSelect}
+            onClick={() => onSelect?.()}
           >
             {isSelected ? 'SELEZIONATO' : 'SELEZIONA'}
           </button>

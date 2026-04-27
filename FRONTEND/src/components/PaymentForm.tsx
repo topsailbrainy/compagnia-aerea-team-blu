@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useStoreTariffa } from '../stores/storeTariffa';
+
 
 const PaymentForm: React.FC = () => {
+  const [modale, setModale] = useState("card")
+  const { passegero , pagamento, setPassegero, setPagamento } = useStoreTariffa(); //importo metodi set
+
+const clearForm = useStoreTariffa(state => state.clearForm);
+
+useEffect(() => {
+  clearForm();
+}, [clearForm]);
+
   return (
     <div className="payment-form-sections">
       {/* Passenger Details Section */}
@@ -13,25 +24,35 @@ const PaymentForm: React.FC = () => {
           <div className="input-grid cols-2">
             <div className="input-group">
               <label className="input-label">Nome</label>
-              <input className="input-field" placeholder="es. Kenji" type="text" />
+              <input className="input-field"  value={passegero.nome}
+               onChange={(e) => setPassegero({ nome: e.target.value })}
+                type="text"/>
             </div>
             <div className="input-group">
               <label className="input-label">Cognome</label>
-              <input className="input-field" placeholder="es. Sato" type="text" />
+              <input className="input-field"  value={passegero.cognome}
+                onChange={(e) => setPassegero({ cognome: e.target.value })}
+                 type="text"/>
             </div>
           </div>
           <div className="input-grid cols-3" style={{ marginTop: '2rem' }}>
             <div className="input-group">
               <label className="input-label">Data di Nascita</label>
-              <input className="input-field" type="date" />
+              <input className="input-field"  type="date"
+               value={passegero.dataNascita}
+                onChange={(e) => setPassegero({ dataNascita: e.target.value })}/>
             </div>
             <div className="input-group">
               <label className="input-label">Codice Fiscale</label>
-              <input className="input-field" placeholder="ABC123XYZ" type="text" />
+              <input className="input-field" placeholder="ABC123XYZ" type="text"
+               value={passegero.codiceFiscale}
+                onChange={(e) => setPassegero({ codiceFiscale: e.target.value })} />
             </div>
             <div className="input-group">
               <label className="input-label">Passaporto / Carta d'Identità</label>
-              <input className="input-field" placeholder="E00000000" type="text" />
+              <input className="input-field" placeholder="E00000000" type="text"   
+              value={passegero.documento}
+               onChange={(e) => setPassegero({ documento: e.target.value })} />
             </div>
           </div>
         </div>
@@ -47,7 +68,7 @@ const PaymentForm: React.FC = () => {
         <div className="payment-methods-grid">
           {/* Credit Card Option */}
           <label className="method-option">
-            <input defaultChecked className="method-radio" name="payment" type="radio" />
+            <input defaultChecked className="method-radio" name="payment" type="radio" onClick={()=>setModale("card")}/>
             <div className="method-content">
               <div className="method-header">
                 <span className="material-symbols-outlined method-icon primary">credit_card</span>
@@ -60,7 +81,7 @@ const PaymentForm: React.FC = () => {
           
           {/* PayPal Option */}
           <label className="method-option">
-            <input className="method-radio" name="payment" type="radio" />
+            <input className="method-radio" name="payment" type="radio" onClick={()=>setModale("Paypal")}/>
             <div className="method-content">
               <div className="method-header">
                 <span className="material-symbols-outlined method-icon secondary">payments</span>
@@ -73,29 +94,58 @@ const PaymentForm: React.FC = () => {
         </div>
 
         {/* Card Details Entry */}
-        <div className="form-card">
+        {modale==="card" && <><div className="form-card">
           <div className="input-group">
             <label className="input-label">Titolare della Carta</label>
-            <input className="input-field" placeholder="Nome completo sulla carta" type="text" />
+            <input className="input-field" placeholder="Nome completo sulla carta" type="text" 
+             value={pagamento?.titolare}
+              onChange={(e) => setPagamento({ titolare: e.target.value })} />
           </div>
           <div className="input-grid" style={{ marginTop: '1.5rem', gridTemplateColumns: '2.5fr 1fr 0.5fr' }}>
             <div className="input-group">
               <label className="input-label">Numero Carta</label>
-              <input className="input-field" placeholder="0000 0000 0000 0000" type="text" />
+              <input className="input-field" placeholder="0000 0000 0000 0000" type="text" 
+              value={pagamento?.numeroCarta}
+               onChange={(e) => setPagamento({ numeroCarta: e.target.value })} />
             </div>
             <div className="input-group">
               <label className="input-label">Scadenza</label>
-              <input className="input-field" placeholder="MM/AA" type="text" />
+              <input className="input-field-mini" placeholder="MM/AA" type="text"  
+              value={pagamento?.scadenza}
+               onChange={(e) => setPagamento({ scadenza: e.target.value })} />
             </div>
             <div className="input-group">
               <label className="input-label">CVV</label>
-              <input className="input-field" placeholder="123" type="password" />
+              <input className="input-field-mini" placeholder="123" type="password"  
+              value={pagamento?.cvv}
+               onChange={(e) => setPagamento({ cvv: e.target.value })} />
             </div>
           </div>
         </div>
+        </>
+      }
+      {modale==="Paypal" && <><div className="form-card">
+          <div className="input-group">
+            <label className="input-label">Titolare dell'account</label>
+            <input className="input-field" placeholder="Nome completo sulla carta" type="text" 
+              value={pagamento?.titolare}
+               onChange={(e) => setPagamento({ titolare: e.target.value })}  />
+          </div>
+          <div className="input-grid" style={{ marginTop: '1.5rem'}}>
+            <div className="input-group">
+              <label className="input-label">Email Account</label>
+              <input className="input-field" placeholder="0000 0000 0000 0000" type="text"  
+              value={pagamento?.email}
+               onChange={(e) => setPagamento({ email: e.target.value })} />
+            </div>
+          </div>
+        </div>
+        </>
+      }
       </section>
     </div>
   );
 };
 
 export default PaymentForm;
+

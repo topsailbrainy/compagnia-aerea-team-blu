@@ -12,13 +12,15 @@ interface Flight {
 
 interface TariffaState {
   isRoundTrip: boolean;
-  fromCity: string;
-  toCity: string;
+  fromCity: string;       // codice IATA (per query)
+  toCity: string;         // codice IATA (per query)
+  fromCityLabel: string;  // nome completo (per display)
+  toCityLabel: string;    // nome completo (per display)
   departureDate: Date | null;
   returnDate: Date | null;
   outboundFlight: Flight | null;
   inboundFlight: Flight | null;
-  setSearchCriteria: (data: { fromCity: string, toCity: string, departureDate: Date | null, returnDate: Date | null, isRoundTrip: boolean }) => void;
+  setSearchCriteria: (data: { fromCity: string, toCity: string, fromCityLabel: string, toCityLabel: string, departureDate: Date | null, returnDate: Date | null, isRoundTrip: boolean }) => void;
   setIsRoundTrip: (isRoundTrip: boolean) => void;
   toggleFlight: (flight: Flight) => void;
   getTotalPrice: () => number;
@@ -29,6 +31,8 @@ export const useStoreTariffa = create<TariffaState>((set, get) => ({
   isRoundTrip: true,
   fromCity: '',
   toCity: '',
+  fromCityLabel: '',
+  toCityLabel: '',
   departureDate: new Date(),
   returnDate: new Date(),
   outboundFlight: null,

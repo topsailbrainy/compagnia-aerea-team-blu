@@ -5,7 +5,7 @@ interface TimerProps {
 }
 
 const Timer: React.FC<TimerProps> = () => {
-  const { timer, setTimer } = useStoreTimer();
+  const { timer } = useStoreTimer();
   const [delta, setDelta] = useState(0);
   const [timerString, setTimerString] = useState("");
 

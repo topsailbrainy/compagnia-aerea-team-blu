@@ -92,7 +92,7 @@ const PaymentSummary: React.FC = () => {
         <img 
           alt="Ghoan Mascot" 
           className="mascot-img-help" 
-          src="https://lh3.googleusercontent.com/aida/ADBb0ui1Yk6P1w8uQC3HaxIE_dB8Aa2kC_o3X8dTlvedk7VrAQ59aFMecYe4renS4zwo8pra1HEdjUL1FCyGu3RmCKATJ7_oShk1gohWpuwv828wpNrWWYqoXWLfbWs-eFYwNWQ2PoyUPmzHWYiX3lD0j3E-MoDuIiFgMg_izAo2Sm-1RIm6D-qdAWIOHIkHfGOjIK5NVFWCBt_fBatO1m5yTt6MVXj2RLNarIIpsNvDJKE8khrYxoY7kVjuMr2u3e_LET21mHSGb28DPA" 
+          src="/img/gatto2.png"
         />
         <div className="help-content">
           <p className="help-title">Serve aiuto con la tua prenotazione?</p>

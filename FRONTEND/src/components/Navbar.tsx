@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [lang, setLang] = useState<'IT' | 'EN'>('IT');
   const { getTimer } = useStoreTimer();
-  const { logged, setLogged } = useStoreUser();
+  const { logged, setLogged, isAdmin } = useStoreUser();
 
   return (
     <nav className="navbar-container">
@@ -55,6 +55,16 @@ const Navbar: React.FC = () => {
 
           {logged ? (
             <>
+              {isAdmin && (
+                <button
+                  className="btn-signin"
+                  style={{ backgroundColor: '#fdeeff', color: '#8137b1', fontWeight: 'bold' }}
+                  onClick={() => navigate('/admin')}
+                >
+                  <span className="material-symbols-outlined">admin_panel_settings</span>
+                  <span>Admin</span>
+                </button>
+              )}
               <button
                 className="btn-signin"
                 onClick={() => navigate('/profile')}
@@ -62,6 +72,7 @@ const Navbar: React.FC = () => {
                 <span className="material-symbols-outlined">person</span>
                 <span>Profilo</span>
               </button>
+
               
               <button
                 className="btn-signup"

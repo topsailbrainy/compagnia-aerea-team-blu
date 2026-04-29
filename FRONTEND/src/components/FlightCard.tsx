@@ -17,7 +17,6 @@ interface FlightCardProps {
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({
-  id,
   departureTime,
   departureCity,
   arrivalTime,

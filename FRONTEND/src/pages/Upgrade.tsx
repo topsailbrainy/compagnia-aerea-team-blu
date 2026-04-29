@@ -28,7 +28,7 @@ const Upgrade: React.FC = () => {
               
               <div className="upgrade-hero-image">
                 <img
-                  src="/img/gatto.png"
+                  src="/img/gatto7.png"
                   alt="Ghoan Mascot"
                   className="upgrade-hero-img"
                 />

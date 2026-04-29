@@ -4,9 +4,6 @@ import DatePicker from 'react-datepicker';
 import { useStoreTariffa } from '../stores/storeTariffa';
 import "react-datepicker/dist/react-datepicker.css";
 import '../styles/Hero.css';
-
-const cities = ["Roma", "Milano", "Parigi", "Londra", "New York"];
-
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const setSearchData = useStoreTariffa(state => state.setSearchCriteria);
@@ -18,6 +15,9 @@ const Hero: React.FC = () => {
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
+  const [aeroportiLista, setAeroportiLista] = useState<{ label: string; iata: string }[]>([]);
+  const [fromIata, setFromIata] = useState('');
+  const [toIata, setToIata] = useState('');
 
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
@@ -37,20 +37,32 @@ const Hero: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const filteredFromCities = cities.filter(city => 
-    city.toLowerCase().startsWith(fromCity.toLowerCase())
+  const filteredFromCities = aeroportiLista.filter(a =>
+    a.label.toLowerCase().includes(fromCity.toLowerCase()) ||
+    a.iata.toLowerCase().includes(fromCity.toLowerCase())
   );
 
-  const filteredToCities = cities.filter(city => 
-    city.toLowerCase().startsWith(toCity.toLowerCase())
+  const filteredToCities = aeroportiLista.filter(a =>
+    a.label.toLowerCase().includes(toCity.toLowerCase()) ||
+    a.iata.toLowerCase().includes(toCity.toLowerCase())
   );
 
   const handleSearch = () => {
-    const isFromCityValid = cities.includes(fromCity);
-    const isToCityValid = cities.includes(toCity);
-    const areCitiesDifferent = fromCity !== toCity;
+    const isFromCityValid = !!fromIata;
+    const isToCityValid = !!toIata;
+    const areCitiesDifferent = fromIata !== toIata;
     const isDateValid = isRoundTrip ? (departureDate && returnDate) : departureDate;
 
+    if (fromIata && toIata && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
+      setSearchData({
+        fromCity: fromIata,
+        toCity: toIata,
+        fromCityLabel: fromCity,  // es. "Leonardo da Vinci (FCO)"
+        toCityLabel: toCity,      // es. "Malpensa (MXP)"
+        departureDate,
+        returnDate,
+        isRoundTrip,
+      });
     if (fromCity && toCity && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
       reset();
       
@@ -58,6 +70,24 @@ const Hero: React.FC = () => {
       navigate('/booking');
     }
   };
+
+  async function getAeroporti() {
+    try {
+      const response = await fetch('/api/search');
+      const data = await response.json();
+      const lista = data.map((a: { name: string; codice_iata: string }) => ({
+        label: `${a.name} (${a.codice_iata})`,
+        iata: a.codice_iata,
+      }));
+      setAeroportiLista(lista);
+    } catch (error) {
+      console.error('Error fetching aeroporti:', error);
+    }
+  }
+
+  useEffect(() => {
+    getAeroporti();
+  }, []);
 
   return (
     <section className="hero-container">
@@ -122,12 +152,13 @@ const Hero: React.FC = () => {
               {showFromDropdown && (
                 <ul className="city-dropdown">
                   {filteredFromCities.length > 0 ? (
-                    filteredFromCities.map(city => (
-                      <li key={city} onClick={() => {
-                        setFromCity(city);
+                    filteredFromCities.map(a => (
+                      <li key={a.iata} onClick={() => {
+                        setFromCity(a.label);
+                        setFromIata(a.iata);
                         setShowFromDropdown(false);
                       }}>
-                        {city}
+                        {a.label}
                       </li>
                     ))
                   ) : (
@@ -156,12 +187,13 @@ const Hero: React.FC = () => {
               {showToDropdown && (
                 <ul className="city-dropdown">
                   {filteredToCities.length > 0 ? (
-                    filteredToCities.map(city => (
-                      <li key={city} onClick={() => {
-                        setToCity(city);
+                    filteredToCities.map(a => (
+                      <li key={a.iata} onClick={() => {
+                        setToCity(a.label);
+                        setToIata(a.iata);
                         setShowToDropdown(false);
                       }}>
-                        {city}
+                        {a.label}
                       </li>
                     ))
                   ) : (

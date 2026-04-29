@@ -1,0 +1,52 @@
+services:
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - 8081:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: airline_db
+      DB_USER: user
+      DB_PASSWORD: password
+      JWT_SECRET: your_super_secret_jwt_key_change_me_in_production
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: airline_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../BACKEND/DATABASE.sql:/docker-entrypoint-initdb.d/DATABASE.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "3030:8080"
+    depends_on:
+      - db
+

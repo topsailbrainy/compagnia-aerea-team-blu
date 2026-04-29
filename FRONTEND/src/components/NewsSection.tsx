@@ -39,7 +39,7 @@ const NewsSection: React.FC = () => {
           <div className="news-card">
             <div className="card-overlay"></div>
             <img 
-              src="https://lh3.googleusercontent.com/aida/ADBb0ugZDxZfpYOH9gbHzrrWm9Lfja8lHNjfMzaWo5GXzMtYMuQ6HCj_VbyPbKRtuZYTZMfGXvWFPv1sKl4lzTx6gWVNufUMYCmKq58pD2LahqxM7khvVVjeY4hhluLSn7lgh3vWWOTpElPeeoSoY3F3JfJTDihqIDdubXUmMJXBHVZpZrcKSIYwMArqbmfW8w9LiUbKUY6RaqGMFfRNa8IVV2SXdsCuLQ5qpruzhMCfQV08YbKCNyN8gJAok20vuBt_NwGw6wxoo6jVkN8" 
+              src="/img/gatto112.png" 
               alt="Sconti Esclusivi" 
               className="card-img"
             />

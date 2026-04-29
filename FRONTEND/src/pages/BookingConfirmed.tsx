@@ -1,11 +1,59 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useStoreTariffa } from '../stores/storeTariffa';
+import { useStoreUser } from '../stores/storeUser';
 import '../styles/BookingConfirmed.css';
 
 
 const BookingConfirmed: React.FC = () => {
   const navigate = useNavigate();
+  const { outboundFlight, inboundFlight, fromCityLabel, toCityLabel } = useStoreTariffa();
+  const { userAuth } = useStoreUser();
+
+  useEffect(() => {
+    const saveBooking = async () => {
+      if (!outboundFlight) {
+        console.warn("[FRONTEND] Mancano i dati del volo nello store. Impossibile salvare.");
+        return;
+      }
+      if (!userAuth) {
+        console.warn("[FRONTEND] Utente non autenticato nello store. Impossibile salvare.");
+        return;
+      }
+
+      const flightIds = [parseInt(outboundFlight.id)];
+
+      if (inboundFlight) {
+        flightIds.push(parseInt(inboundFlight.id));
+      }
+
+      console.log("[FRONTEND] Tentativo di salvataggio prenotazione per voli:", flightIds);
+
+      try {
+        const response = await fetch('/api/prenotazione', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${userAuth}`
+          },
+          body: JSON.stringify({ flightIds })
+        });
+        
+        const resData = await response.json();
+        if (response.ok) {
+            console.log("[FRONTEND] Prenotazione salvata con successo!", resData);
+        } else {
+            console.error("[FRONTEND] Errore salvataggio:", resData.error);
+        }
+      } catch (error) {
+        console.error("[FRONTEND] Errore connessione API prenotazione:", error);
+      }
+
+    };
+
+    saveBooking();
+  }, [outboundFlight, inboundFlight, userAuth]);
+
   const { reset } = useStoreTariffa();
   const { passegero, outboundFlight} = useStoreTariffa();
 
@@ -20,7 +68,7 @@ const BookingConfirmed: React.FC = () => {
             <img
               alt="Spirit of Ghoan mascot cat in purple martial arts uniform giving a thumbs up"
               className="booking-confirmed-hero-img"
-              src="https://lh3.googleusercontent.com/aida/ADBb0uhWgTiw0BxFL7Pqx7yOZvut7XHZsbCkVMdMZOJpWXopnYJu9A3i8OFa6eMIJWsLeeRjbc_BG0gHXASt-vPRm2Y7gGaNJGOE-BZw5g_9tk-5BSE1xNd8yoJ22pQzIOK8SLmQLThgkCIGfhq82IymFgfzZdlFGtnY82ilYhKoZlrHpP7bXiuZQo4YHlajD08tB2b4juNF0t8MYJfgSB7_cvJdNaXuKFkPKTnWncXKxBfCDjfPLAuKbk9SsSc3MegRc5ZewLCQwOOr8w"
+              src="/img/gatto3.png"
             />
             <h1 className="booking-confirmed-title">
               Grazie per l'acquisto!
@@ -45,6 +93,12 @@ const BookingConfirmed: React.FC = () => {
             <div className="booking-confirmed-ticket-body">
               <div className="booking-confirmed-details">
                 <div>
+                  <p className="booking-confirmed-detail-label">DESTINAZIONE</p>
+                  <p className="booking-confirmed-detail-value">{toCityLabel}</p>
+                </div>
+                <div>
+                  <p className="booking-confirmed-detail-label">PARTENZA</p>
+                  <p className="booking-confirmed-detail-value">{fromCityLabel}</p>
                   <p className="booking-confirmed-detail-label">Name</p>
                   <p className="booking-confirmed-detail-value">{passegero?.nome}</p>
                 </div>
@@ -53,12 +107,18 @@ const BookingConfirmed: React.FC = () => {
                   <p className="booking-confirmed-detail-value">{passegero?.cognome}</p>
                 </div>
                 <div className="booking-confirmed-detail-value full-width">
-                  <p className="booking-confirmed-detail-label">Tax Code</p>
-                  <p className="booking-confirmed-detail-value tracking-widest">RSSLSN85M01H501Z</p>
+                  <p className="booking-confirmed-detail-label">STATO PRENOTAZIONE</p>
+                  <p className="booking-confirmed-detail-value tracking-widest">CONFERMATA - PAGATA</p>
                 </div>
                 <div>
                   <p className="booking-confirmed-detail-label">GATE</p>
                   <div>
+                    <span className="booking-confirmed-gate-badge">B{Math.floor(Math.random() * 30) + 1}</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="booking-confirmed-detail-label">VOLO</p>
+                  <p className="booking-confirmed-flight-number">GH-{outboundFlight?.id || '2024'}</p>
                     <span className="booking-confirmed-gate-badge"> B{outboundFlight?.id?.slice(0, 2)}</span>
                   </div>
                 </div>
@@ -89,18 +149,18 @@ const BookingConfirmed: React.FC = () => {
             <div className="booking-confirmed-ticket-footer">
               <div className="booking-confirmed-route">
                 <div className="booking-confirmed-airport">
-                  <span className="booking-confirmed-airport-code">MXP</span>
-                  <span className="booking-confirmed-airport-city">Milan</span>
+                  <span className="booking-confirmed-airport-code">{outboundFlight?.fromCity || 'MXP'}</span>
+                  <span className="booking-confirmed-airport-city">{fromCityLabel}</span>
                 </div>
                 <span className="material-symbols-outlined booking-confirmed-route-arrow">east</span>
                 <div className="booking-confirmed-airport">
-                  <span className="booking-confirmed-airport-code">NRT</span>
-                  <span className="booking-confirmed-airport-city">Tokyo</span>
+                  <span className="booking-confirmed-airport-code">{outboundFlight?.toCity || 'NRT'}</span>
+                  <span className="booking-confirmed-airport-city">{toCityLabel}</span>
                 </div>
               </div>
               <div className="booking-confirmed-boarding-time">
-                <p className="booking-confirmed-boarding-time-label">BOARDING TIME</p>
-                <p className="booking-confirmed-boarding-time-value">10:45 AM</p>
+                <p className="booking-confirmed-boarding-time-label">ORARIO PARTENZA</p>
+                <p className="booking-confirmed-boarding-time-value">{outboundFlight?.orario || '10:45 AM'}</p>
               </div>
             </div>
           </div>

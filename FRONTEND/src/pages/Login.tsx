@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useStoreUser } from '../stores/storeUser';
 import '../styles/Login.css';
@@ -6,6 +6,42 @@ import '../styles/Login.css';
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setLogged } = useStoreUser();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Errore durante il login');
+      }
+
+      // Login successo
+      const authHeader = btoa(`${email}:${password}`);
+      setLogged(true, authHeader, data.user.admin);
+      
+      navigate('/');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="login-page">
@@ -14,7 +50,7 @@ const Login: React.FC = () => {
           <img
             alt="Ghoan Airlines purple plane with cat mascot"
             className="login-image"
-            src="https://lh3.googleusercontent.com/aida/ADBb0uj338FI4SuUlwQs0kbGqsuCkTKlNjbRKMywQivl55_UdUtZtLF0nnPZj1YxlRaNJGkK5xtpD7GI3pZNUPcLvECkvdfSeLrdwyIYx9bYMtFwmveT1cB7RaBuir9cAVbZimn72wiPKwJ4SvkeD6D5twM_ja07z9iw4OHSkHQMQLe_YvR0zuRjAs1SP2yDqmH_wsE7Zi2WppRSsuAkkZguxa5zJI8SxmcflFX1p49m12EI9rRooPuMh7OH1DcFbkHNUXdf8zzrnqWFQcY"
+            src="/img/gatto.png"
           />
           <div className="login-image-overlay"></div>
           <div className="login-image-text">
@@ -31,7 +67,8 @@ const Login: React.FC = () => {
             <h1 className="login-title">Bentornato</h1>
             <p className="login-subtitle">Inserisci i tuoi dati per accedere al tuo account.</p>
           </div>
-          <form className="login-form" onSubmit={(e) => { e.preventDefault(); setLogged(true); navigate('/'); }}>
+          <form className="login-form" onSubmit={handleLogin}>
+            {error && <div className="login-error" style={{ color: 'red', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</div>}
             <div className="login-form-fields">
               <div className="login-field">
                 <label className="login-label">Email / Username</label>
@@ -39,6 +76,9 @@ const Login: React.FC = () => {
                   className="login-input"
                   placeholder="nome@esempio.it"
                   type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="login-field">
@@ -47,6 +87,9 @@ const Login: React.FC = () => {
                   className="login-input"
                   placeholder="••••••••"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="login-forgot">
@@ -55,8 +98,8 @@ const Login: React.FC = () => {
                 </a>
               </div>
             </div>
-            <button className="login-btn" type="submit">
-              Accedi
+            <button className="login-btn" type="submit" disabled={loading}>
+              {loading ? 'Accesso in corso...' : 'Accedi'}
             </button>
           </form>
           <div className="login-signup">

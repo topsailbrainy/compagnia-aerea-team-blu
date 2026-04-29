@@ -1,6 +1,11 @@
 import { Router } from "express";
-import { authMW } from "../middleware/authorization.MW";
+import { profileGET } from "../controller/profile.controller";
+import { bookingPOST } from "../controller/booking.controller";
 
 export const router = Router();
 
-router.use("/auth", (req, res) => res.json({ message: "Hello World" }));
+router.get("/profile", profileGET);
+router.post("/prenotazione", bookingPOST);
+router.get("/prenotazione", (req, res) => res.status(405).json({ error: "Usa POST per creare una prenotazione" }));
+
+

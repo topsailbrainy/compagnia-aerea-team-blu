@@ -8,7 +8,7 @@ CREATE TABLE aerei (
     id SERIAL PRIMARY KEY,
     modello VARCHAR(50),
     capienza INTEGER,
-    pilot_id INTEGER REFERENCES piloti(id)
+    pilot_id INTEGER REFERENCES piloti(id) ON DELETE CASCADE
 );
 
 CREATE TABLE aereoporti (
@@ -20,28 +20,28 @@ CREATE TABLE aereoporti (
 
 CREATE TABLE gates (
     id SERIAL,
-    aereoporto_codice_IATA VARCHAR(3) REFERENCES aereoporti(codice_IATA),
+    aereoporto_codice_IATA VARCHAR(3) REFERENCES aereoporti(codice_IATA) ON DELETE CASCADE,
     PRIMARY KEY (id, aereoporto_codice_IATA)
 );
 
 CREATE TABLE tratte (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    aereoporto_partenza VARCHAR(3) REFERENCES aereoporti(codice_IATA),
-    aereoporto_arrivo VARCHAR(3) REFERENCES aereoporti(codice_IATA),
+    aereoporto_partenza VARCHAR(3) REFERENCES aereoporti(codice_IATA) ON DELETE CASCADE,
+    aereoporto_arrivo VARCHAR(3) REFERENCES aereoporti(codice_IATA) ON DELETE CASCADE,
     prezzo NUMERIC
 );
 
 CREATE TABLE voli (
     id SERIAL PRIMARY KEY,
-    tratte_id UUID REFERENCES tratte(id),
-    aerei_id INTEGER REFERENCES aerei(id),
+    tratte_id UUID REFERENCES tratte(id) ON DELETE CASCADE,
+    aerei_id INTEGER REFERENCES aerei(id) ON DELETE CASCADE,
     gates_id INTEGER,
     data_partenza DATE,
     data_arrivo DATE,
     aereoporto_codice_IATA VARCHAR(3),
     orario_partenza TIME,
     orario_arrivo TIME,
-    FOREIGN KEY (gates_id, aereoporto_codice_IATA) REFERENCES gates(id, aereoporto_codice_IATA)
+    FOREIGN KEY (gates_id, aereoporto_codice_IATA) REFERENCES gates(id, aereoporto_codice_IATA) ON DELETE CASCADE
 );
 
 CREATE TABLE documento(
@@ -67,20 +67,20 @@ CREATE TABLE utenti(
     surname VARCHAR(50),
     email VARCHAR(50),
     password VARCHAR(50),
-    documento_id INTEGER REFERENCES documento(id),
-    card_id INTEGER REFERENCES card(id),
+    documento_id INTEGER REFERENCES documento(id) ON DELETE CASCADE,
+    card_id INTEGER REFERENCES card(id) ON DELETE CASCADE ,
     admin BOOLEAN
 );
 
 CREATE TABLE prenotazione(
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID REFERENCES utenti(id)
+    user_id UUID REFERENCES utenti(id) ON DELETE CASCADE
 );
 
 CREATE TABLE biglietto(
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    prenotazione_id UUID REFERENCES prenotazione(id),
-    volo_id INTEGER REFERENCES voli(id)
+    prenotazione_id UUID REFERENCES prenotazione(id) ON DELETE CASCADE,
+    volo_id INTEGER REFERENCES voli(id) ON DELETE CASCADE
 );
 
 -- Mockup Data
@@ -188,4 +188,3 @@ INSERT INTO utenti (name, surname, email, password, documento_id, card_id, admin
 
 -- Update existing user to link card
 UPDATE utenti SET card_id = 1 WHERE email = 'luca@example.com';
-

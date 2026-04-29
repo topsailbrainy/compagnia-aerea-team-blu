@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useStoreUser } from '../stores/storeUser';
 import '../styles/Profile.css';
 
+
 const Profile: React.FC = () => {
   const { logged, userAuth } = useStoreUser();
   const [profileData, setProfileData] = useState<any>(null);
@@ -71,6 +72,9 @@ const Profile: React.FC = () => {
   }
 
   const { user, bookings } = profileData;
+   const ticketsRef = useRef<HTMLDivElement>(null);
+   const profileRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="profile-page">
       <div className="profile-container">

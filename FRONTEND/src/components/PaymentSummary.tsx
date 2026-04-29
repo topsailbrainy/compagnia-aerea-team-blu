@@ -6,7 +6,14 @@ import { useStoreTimer } from '../stores/storeTimer';
 const PaymentSummary: React.FC = () => {
   const days = ["Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato","Domenica"]
   const navigate = useNavigate();
-  const { outboundFlight, inboundFlight, getTotalPrice, getTaxPrice } = useStoreTariffa();
+ const { 
+  outboundFlight, 
+  inboundFlight, 
+  getTotalPrice, 
+  getTaxPrice,
+  passegero,
+  pagamento,
+  } = useStoreTariffa();
   const { setTimer } = useStoreTimer();
 
   const total = getTotalPrice();
@@ -18,6 +25,32 @@ const PaymentSummary: React.FC = () => {
       currency: 'EUR',
     }).format(value);
   };
+
+ const handleUtente = () => {
+  const isUtenteValido =
+    !!passegero?.nome &&
+    !!passegero?.cognome &&
+    !!passegero?.dataNascita &&
+    !!passegero?.codiceFiscale &&
+    !!passegero?.documento;
+
+  const isPagamentoValido =
+    !!pagamento?.titolare &&
+    (
+      (!!pagamento?.numeroCarta && !!pagamento?.scadenza && !!pagamento?.cvv) ||
+      !!pagamento?.email
+    );
+
+  const isFormValido = isUtenteValido && isPagamentoValido;
+
+  if (!isFormValido) {
+    alert("Devi completare tutti i campi prima di procedere");
+    return; // ❌ blocca la navigazione
+  }
+
+  setTimer(0);
+  navigate('/booking-confirmed'); // ✅ solo se tutto ok
+};
 
   return (
     <aside className="payment-sidebar">
@@ -72,10 +105,7 @@ const PaymentSummary: React.FC = () => {
 
         <button
           className="btn-pay"
-          onClick={() => {
-            setTimer(0);
-            navigate('/booking-confirmed');
-          }}
+          onClick={handleUtente}
         >
           Completa Pagamento
           <span className="material-symbols-outlined">arrow_forward</span>

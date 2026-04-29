@@ -139,6 +139,7 @@
   border-radius: 0.75rem;
   box-shadow: 0px 20px 40px rgba(45, 47, 47, 0.06);
   margin-bottom: 3rem;
+  max-width: 100vh;
 }
 
 .input-grid {
@@ -181,6 +182,18 @@
   font-size: 1rem;
   color: var(--on-background);
   transition: all 0.2s;
+}
+
+.input-field-mini{
+  background-color: var(--surface-container-low);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--on-background);
+  transition: all 0.2s;
+  max-width: 20vh;
 }
 
 .input-field:focus {

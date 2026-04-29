@@ -7,6 +7,7 @@ import '../styles/Hero.css';
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const setSearchData = useStoreTariffa(state => state.setSearchCriteria);
+  const reset = useStoreTariffa(state => state.reset);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
@@ -21,11 +22,7 @@ const Hero: React.FC = () => {
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!isRoundTrip) {
-      setReturnDate(null);
-    }
-  }, [isRoundTrip]);
+ 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,6 +63,10 @@ const Hero: React.FC = () => {
         returnDate,
         isRoundTrip,
       });
+    if (fromCity && toCity && isDateValid && isFromCityValid && isToCityValid && areCitiesDifferent) {
+      reset();
+      
+      setSearchData({ fromCity, toCity, departureDate, returnDate, isRoundTrip})
       navigate('/booking');
     }
   };
@@ -92,7 +93,7 @@ const Hero: React.FC = () => {
     <section className="hero-container">
       <div className="hero-background">
         <img 
-          src="../../img/screen.png"
+          src="../../img/gatto.png" 
           alt="Ghoan Airlines Hero" 
           className="hero-img"
         />
@@ -100,11 +101,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="hero-content">
-        <img 
-          src="../../img/gatto113.png"
-          alt="Ghoan Airlines Hero" 
-          className="hero-title"
-        />
+        <h1 className="hero-title">Ghoan Airlines</h1>
       </div>
 
       <div className="search-bar-container">
@@ -125,7 +122,10 @@ const Hero: React.FC = () => {
                 type="radio" 
                 name="trip-type" 
                 checked={!isRoundTrip}
-                onChange={() => setIsRoundTrip(false)}
+                onChange={() =>{
+                  setIsRoundTrip(false);
+                  setReturnDate(null);
+                }}
                 className="radio-input" 
               />
               <span className="radio-text">Sola Andata</span>
